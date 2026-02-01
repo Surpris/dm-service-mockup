@@ -1,0 +1,122 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"] // UUID v7生成用（必要に応じて）
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- 1. System Defined Entities (厳密な管理) ---
+
+model Project {
+  id            String   @id @default(uuid()) // UUID v7
+  projectNumber String   @unique // 研究課題番号
+  description   String?
+
+  // Relations
+  metadata      DMPMetadata?
+  datasets      Dataset[]
+  contributors  ProjectContributor[]
+
+  // Common
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  deletedAt     DateTime? // 論理削除用
+}
+
+model DMPMetadata {
+  id              String   @id @default(uuid())
+  createdDate     DateTime
+  lastUpdatedDate DateTime
+
+  projectId       String   @unique
+  project         Project  @relation(fields: [projectId], references: [id])
+}
+
+model Contributor {
+  id            String   @id @default(uuid())
+  contributorId String   @unique // 計画書内通し番号
+  name          String
+
+  // Relations
+  projects      ProjectContributor[]
+  managedData   Dataset[] @relation("ManagedBy")
+  collectedData Dataset[] @relation("CollectedBy")
+
+  deletedAt     DateTime?
+}
+
+// 中間テーブル（役割を持つため明示的に定義）
+model ProjectContributor {
+  id            String      @id @default(uuid())
+  projectId     String
+  project       Project     @relation(fields: [projectId], references: [id])
+  contributorId String
+  contributor   Contributor @relation(fields: [contributorId], references: [id])
+  role          ProjectRole // Enum: PI, Co-Investigator, etc.
+}
+
+model Dataset {
+  id            String   @id @default(uuid())
+  datasetNo     Int      // 表示用番号
+  title         String
+  accessPolicy  AccessPolicy // Enum: Public, Shared, Closed
+
+  // System Relations
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id])
+
+  collectedById String
+  collectedBy   Contributor @relation("CollectedBy", fields: [collectedById], references: [id])
+  collectedAt   DateTime?
+
+  managedById   String?
+  managedBy     Contributor? @relation("ManagedBy", fields: [managedById], references: [id])
+  managedFrom   DateTime?
+  managedTo     DateTime?
+
+  deletedAt     DateTime?
+}
+
+// --- 2. User Defined Relationships (柔軟な管理) ---
+
+model UserDefinedRelationship {
+  id               String   @id @default(uuid())
+  relationshipType String   // ex: "DERIVED_FROM", "FUNDED_BY"
+
+  // 全てUUID(String)なので統一的に扱える
+  sourceId         String
+  sourceType       EntityType // Enum: Project, Dataset, Contributor
+
+  targetId         String
+  targetType       EntityType
+
+  properties       Json?    // 属性情報
+
+  createdAt        DateTime @default(now())
+  createdBy        String   // User ID
+  deletedAt        DateTime?
+
+  @@index([sourceId, sourceType])
+  @@index([targetId, targetType])
+}
+
+enum ProjectRole {
+  PRINCIPAL_INVESTIGATOR
+  CO_INVESTIGATOR
+  DATA_COLLECTOR
+  DATA_MANAGER
+}
+
+enum AccessPolicy {
+  PUBLIC
+  SHARED
+  CLOSED
+}
+
+enum EntityType {
+  PROJECT
+  DATASET
+  CONTRIBUTOR
+}
