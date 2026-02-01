@@ -2,8 +2,6 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
     <p align="center">
@@ -25,10 +23,47 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Features & Implementation Details
+
+### Database & ORM
+
+- **Database**: PostgreSQL (v16+)
+- **ORM**: Prisma (v5.22.0)
+  - *Note*: We are pinning Prisma to v5.22.0 (LTS stable) to avoid initialization issues observed with v7.x.
+
+### ID Strategy: UUID v7
+
+- All entities use **UUID v7** as their Primary Key (`id`).
+- **Generation**:
+  - Implemented via Prisma Client Extension (`src/prisma/prisma.extension.ts`).
+  - Automatically generates a UUID v7 if `id` is not provided during `create` or `createMany`.
+  - Uses the `uuid` library (v11+).
+
+### Logical Deletion (Soft Delete)
+
+- **Mechanism**:
+  - Implemented via Prisma Client Extension.
+  - Intercepts `delete` and `deleteMany` operations and converts them to `update` operations that set `deletedAt = new Date()`.
+  - Intercepts `findUnique`, `findFirst`, `findMany` operations to filter out records where `deletedAt` is not null.
+- **Target Models**: `Project`, `Contributor`, `Dataset`, `UserDefinedRelationship`.
+- **Note on `findUnique`**: If a record exists but is effectively deleted (`deletedAt != null`), the extension returns `null`.
+
+## Verification
+
+To verify the UUID v7 and Soft Delete functionality, you can run the provided debug script:
+
+```bash
+# Ensure database is running
+$ docker-compose up -d
+
+# Run verification script
+$ npx ts-node src/debug/test-uuid-soft-delete.ts
+```
+
 ## Project setup
 
 ```bash
-$ npm install
+npm install
 ```
 
 ## Compile and run the project
@@ -64,8 +99,8 @@ When you're ready to deploy your NestJS application to production, there are som
 If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm install -g @nestjs/mau
+mau deploy
 ```
 
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
