@@ -5,7 +5,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 async function main() {
-  // @ts-ignore
   const basePrisma = new PrismaClient({
     log: ['info'],
   });
@@ -13,7 +12,7 @@ async function main() {
 
   try {
     console.log('--- Connecting ---');
-    
+
     // 1. Create a Project
     console.log('--- Creating Project ---');
     const project = await prisma.project.create({
@@ -46,7 +45,9 @@ async function main() {
     });
 
     if (found === null) {
-      console.log('✅ findUnique returned null (Soft Delete works for findUnique)');
+      console.log(
+        '✅ findUnique returned null (Soft Delete works for findUnique)',
+      );
     } else {
       console.error('❌ findUnique returned record:', found);
     }
@@ -57,7 +58,9 @@ async function main() {
       where: { id: project.id },
     });
     if (foundMany.length === 0) {
-      console.log('✅ findMany returned empty array (Soft Delete works for findMany)');
+      console.log(
+        '✅ findMany returned empty array (Soft Delete works for findMany)',
+      );
     } else {
       console.error('❌ findMany returned records:', foundMany);
     }
@@ -74,7 +77,6 @@ async function main() {
     } else {
       console.error('❌ Raw record check failed.');
     }
-
   } catch (e) {
     console.error(e);
   } finally {
@@ -82,4 +84,4 @@ async function main() {
   }
 }
 
-main();
+void main();
