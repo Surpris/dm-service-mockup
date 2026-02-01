@@ -36,3 +36,6 @@ generated/
 
 # Testing
 *.spec.ts.snap
+
+# MCP settings and outputs
+.serena/
