@@ -1,28 +1,35 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { v7 as uuidv7 } from 'uuid';
 
-export const softDeleteModels = ['Project', 'Contributor', 'Dataset', 'UserDefinedRelationship'];
+export const softDeleteModels = [
+  'Project',
+  'Contributor',
+  'Dataset',
+  'UserDefinedRelationship',
+];
 
-export type ExtendedPrismaClient = ReturnType<typeof createExtendedPrismaClient>;
+export type ExtendedPrismaClient = ReturnType<
+  typeof createExtendedPrismaClient
+>;
 
 export function createExtendedPrismaClient(prisma: PrismaClient) {
   return prisma.$extends({
     name: 'uuid-v7-and-soft-delete',
     query: {
       $allModels: {
-        async create({ model, args, query }) {
+        async create({ args, query }) {
           if (args.data && typeof args.data === 'object') {
             if (!('id' in args.data) || !args.data.id) {
-              (args.data as any).id = uuidv7();
+              (args.data as { id?: string }).id = uuidv7();
             }
           }
           return query(args);
         },
-        async createMany({ model, args, query }) {
+        async createMany({ args, query }) {
           if (Array.isArray(args.data)) {
             args.data.forEach((item: any) => {
-              if (!item.id) {
-                item.id = uuidv7();
+              if (!(item as { id?: string }).id) {
+                (item as { id?: string }).id = uuidv7();
               }
             });
           }
@@ -30,6 +37,7 @@ export function createExtendedPrismaClient(prisma: PrismaClient) {
         },
         async delete({ model, args, query }) {
           if (softDeleteModels.includes(model)) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             return (prisma as any)[model].update({
               ...args,
               data: { deletedAt: new Date() },
@@ -39,6 +47,7 @@ export function createExtendedPrismaClient(prisma: PrismaClient) {
         },
         async deleteMany({ model, args, query }) {
           if (softDeleteModels.includes(model)) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             return (prisma as any)[model].updateMany({
               ...args,
               data: { deletedAt: new Date() },
@@ -52,7 +61,7 @@ export function createExtendedPrismaClient(prisma: PrismaClient) {
             // unless we change it to findFirst (which we can't easily do in 'query' extension while keeping types happy easily?)
             // Actually, we can just run the query and filter the result.
             const result = await query(args);
-            if (result && (result as any).deletedAt) {
+            if (result && (result as { deletedAt?: Date }).deletedAt) {
               return null;
             }
             return result;
