@@ -8,7 +8,9 @@ export class DatasetResolver {
   constructor(private readonly datasetService: DatasetService) {}
 
   @Mutation(() => Dataset)
-  createDataset(@Args('createDatasetInput') createDatasetInput: CreateDatasetInput) {
+  createDataset(
+    @Args('createDatasetInput') createDatasetInput: CreateDatasetInput,
+  ) {
     return this.datasetService.create(createDatasetInput);
   }
 

@@ -35,14 +35,14 @@ export class UpdateDatasetInput {
 
   @Field(() => AccessPolicy, { nullable: true })
   accessPolicy?: AccessPolicy;
-  
+
   // Relations update typically might need separate handling or just ID updates
   @Field(() => String, { nullable: true })
   collectedById?: string;
 
   @Field(() => String, { nullable: true })
   managedById?: string;
-  
+
   @Field(() => Date, { nullable: true })
   collectedAt?: Date;
 

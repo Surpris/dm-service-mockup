@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateContributorInput, UpdateContributorInput } from './dto/contributor.input';
+import {
+  CreateContributorInput,
+  UpdateContributorInput,
+} from './dto/contributor.input';
 
 @Injectable()
 export class ContributorService {

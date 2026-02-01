@@ -1,14 +1,20 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { ContributorService } from './contributor.service';
 import { Contributor } from './entities/contributor.entity';
-import { CreateContributorInput, UpdateContributorInput } from './dto/contributor.input';
+import {
+  CreateContributorInput,
+  UpdateContributorInput,
+} from './dto/contributor.input';
 
 @Resolver(() => Contributor)
 export class ContributorResolver {
   constructor(private readonly contributorService: ContributorService) {}
 
   @Mutation(() => Contributor)
-  createContributor(@Args('createContributorInput') createContributorInput: CreateContributorInput) {
+  createContributor(
+    @Args('createContributorInput')
+    createContributorInput: CreateContributorInput,
+  ) {
     return this.contributorService.create(createContributorInput);
   }
 
@@ -25,7 +31,8 @@ export class ContributorResolver {
   @Mutation(() => Contributor)
   updateContributor(
     @Args('id', { type: () => ID }) id: string,
-    @Args('updateContributorInput') updateContributorInput: UpdateContributorInput,
+    @Args('updateContributorInput')
+    updateContributorInput: UpdateContributorInput,
   ) {
     return this.contributorService.update(id, updateContributorInput);
   }
