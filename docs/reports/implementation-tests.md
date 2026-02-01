@@ -58,3 +58,42 @@
 - **Lint**: エラーなし (`npm run lint` Pass)
 
 これにより、次フェーズ（Entity 間のリレーション実装など）に進むための堅牢な土台が整いました。
+
+## 追記 (2026-02-02): Integration / E2E Tests (API Layer)
+
+`backend/test` 配下における E2E テストの実装を行いました。
+
+### 実装範囲
+
+#### 1. Project Entity E2E Test (`backend/test/projects.e2e-spec.ts`)
+
+- **CRUD Operations**: GraphQL API を介した `create`, `read`, `update`, `delete` の一連のフローを検証。
+- **UUID v7 検証**: 生成された ID が UUID 形式であることを確認。
+- **論理削除の検証**:
+  - API レベル: 削除後に Query を投げると `null` が返ること。
+  - DB レベル: 直接 `PrismaClient` で DB を参照し、レコードが存在しつつ `deletedAt` が更新されていること。
+
+### 発生した課題と対策
+
+#### 1. `uuid` ライブラリの ESM import エラー
+
+- **課題**: `uuid` v11 系が ESM only となり、Jest (CommonJS 環境) で `createExtendedPrismaClient` 内の `import { v7 as uuidv7 } from 'uuid'` が `SyntaxError: Unexpected token 'export'` を引き起こした。
+- **対策**: `backend/test/jest-e2e.json` に `transformIgnorePatterns` を設定し、`node_modules/uuid` をトランスパイル対象に含めることで解決。
+
+```json
+  "transformIgnorePatterns": [
+    "/node_modules/(?!uuid)/"
+  ]
+```
+
+#### 2. Test Teardown 時の Resource Leak 警告
+
+- **課題**: テスト実行後に `A worker process has failed to exit gracefully` という警告が発生。
+- **原因**: 既存の `test/app.e2e-spec.ts` において、`beforeEach` で `createNestApplication()` しているものの、アプリケーションの終了処理 (`app.close()`) が行われていなかった。
+- **対策**: `test/app.e2e-spec.ts` を以下の通り修正。
+  - `beforeEach` -> `beforeAll` に変更（テスト高速化も兼ねる）。
+  - `afterAll` を追加し、`await app.close()` を明示的に実行。
+
+### 結果
+
+- **E2E テスト実行結果**: 全 **2 Test Suites** Pass (`app.e2e-spec.ts`, `projects.e2e-spec.ts`)
