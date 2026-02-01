@@ -200,7 +200,7 @@ enum EntityType {
 - **Goal:** システム定義エンティティの登録・閲覧ができる。
 - **Tasks:**
 - [x] [Backend] Nest.js + Prisma + PostgreSQL 環境構築 (Docker Compose)。
-- [ ] [Backend] UUID v7 生成ロジックと論理削除 Middleware の実装。
+- [x] [Backend] UUID v7 生成ロジックと論理削除 Middleware の実装。
 - [ ] [Backend] Core Entities (Project, Dataset, Contributor) の GraphQL Schema 定義 & CRUD 実装。
 - [ ] [Frontend] React + Vite + MUI 環境構築。
 - [ ] [Frontend] テーブルビューによる一覧・検索画面の実装。
