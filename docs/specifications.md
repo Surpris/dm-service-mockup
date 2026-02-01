@@ -199,31 +199,31 @@ enum EntityType {
 
 - **Goal:** システム定義エンティティの登録・閲覧ができる。
 - **Tasks:**
-- [Backend] Nest.js + Prisma + PostgreSQL 環境構築 (Docker Compose)。
-- [Backend] UUID v7 生成ロジックと論理削除 Middleware の実装。
-- [Backend] Core Entities (Project, Dataset, Contributor) の GraphQL Schema 定義 & CRUD 実装。
-- [Frontend] React + Vite + MUI 環境構築。
-- [Frontend] テーブルビューによる一覧・検索画面の実装。
+- [x] [Backend] Nest.js + Prisma + PostgreSQL 環境構築 (Docker Compose)。
+- [x] [Backend] UUID v7 生成ロジックと論理削除 Middleware の実装。
+- [ ] [Backend] Core Entities (Project, Dataset, Contributor) の GraphQL Schema 定義 & CRUD 実装。
+- [ ] [Frontend] React + Vite + MUI 環境構築。
+- [ ] [Frontend] テーブルビューによる一覧・検索画面の実装。
 
 ### Phase 2: ユーザー定義リレーションとグラフAPI (2週間)
 
 - **Goal:** ユーザーが自由にリレーションを追加でき、APIがグラフ構造を返却できる。
 - **Tasks:**
-- [Backend] `UserDefinedRelationship` モデルの実装。
-- [Backend] グラフデータ生成ロジックの実装（System/User Relationの統合）。
-- [Backend] グラフ検索用クエリ（`getGraphData`）の実装。
+- [ ] [Backend] `UserDefinedRelationship` モデルの実装。
+- [ ] [Backend] グラフデータ生成ロジックの実装（System/User Relationの統合）。
+- [ ] [Backend] グラフ検索用クエリ（`getGraphData`）の実装。
 
 ### Phase 3: ナレッジグラフ可視化 (2〜3週間)
 
 - **Goal:** React Flow を用いてデータを可視化・操作できる。
 - **Tasks:**
-- [Frontend] React Flow の導入とカスタムノード（ProjectNode, DatasetNode）の作成。
-- [Frontend] 自動レイアウト機能の実装（dagre または elkjs を利用してノードの重なりを防ぐ）。
-- [Frontend] グラフ上のフィルタリング UI の実装。
+- [ ] [Frontend] React Flow の導入とカスタムノード（ProjectNode, DatasetNode）の作成。
+- [ ] [Frontend] 自動レイアウト機能の実装（dagre または elkjs を利用してノードの重なりを防ぐ）。
+- [ ] [Frontend] グラフ上のフィルタリング UI の実装。
 
 ### Phase 4: 統合テストとガバナンス機能 (1〜2週間)
 
 - **Goal:** E2Eでの動作確認と、将来的な運用のための準備。
 - **Tasks:**
-- [QA] シナリオテスト（データの作成 → 独自リレーション設定 → グラフ確認 → 削除）。
-- [Ops] `UserDefinedRelationship` から System Relation への昇格（Promotion）用SQL/スクリプトのプロトタイプ作成。
+- [ ] [QA] シナリオテスト（データの作成 → 独自リレーション設定 → グラフ確認 → 削除）。
+- [ ] [Ops] `UserDefinedRelationship` から System Relation への昇格（Promotion）用SQL/スクリプトのプロトタイプ作成。
