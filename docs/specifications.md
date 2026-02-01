@@ -201,7 +201,8 @@ enum EntityType {
 - **Tasks:**
 - [x] [Backend] Nest.js + Prisma + PostgreSQL 環境構築 (Docker Compose)。
 - [x] [Backend] UUID v7 生成ロジックと論理削除 Middleware の実装。
-- [ ] [Backend] Core Entities (Project, Dataset, Contributor) の GraphQL Schema 定義 & CRUD 実装。
+- [x] [Backend] Core Entities (Project, Dataset, Contributor) の GraphQL Schema 定義 & CRUD 実装。
+- [ ] [Backend] Implement Entity Relationships (Project-Dataset, etc.) in GraphQL.
 - [ ] [Frontend] React + Vite + MUI 環境構築。
 - [ ] [Frontend] テーブルビューによる一覧・検索画面の実装。
 
