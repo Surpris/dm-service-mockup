@@ -1,0 +1,113 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Access policy for the dataset"""
+enum AccessPolicy {
+  CLOSED
+  PUBLIC
+  SHARED
+}
+
+type Contributor {
+  """Contributor ID defined in plan"""
+  contributorId: String!
+  deletedAt: DateTime
+  id: ID!
+  name: String!
+}
+
+input CreateContributorInput {
+  """Contributor ID defined in plan"""
+  contributorId: String!
+  name: String!
+}
+
+input CreateDatasetInput {
+  accessPolicy: AccessPolicy!
+  collectedAt: DateTime
+  collectedById: String!
+  datasetNo: Int!
+  managedById: String
+  projectId: String!
+  title: String!
+}
+
+input CreateProjectInput {
+  description: String
+
+  """Research Project Number"""
+  projectNumber: String!
+}
+
+type Dataset {
+  accessPolicy: AccessPolicy!
+  collectedAt: DateTime
+  collectedById: String!
+  datasetNo: Int!
+  deletedAt: DateTime
+  id: ID!
+  managedById: String
+  managedFrom: DateTime
+  managedTo: DateTime
+  projectId: String!
+  title: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createContributor(createContributorInput: CreateContributorInput!): Contributor!
+  createDataset(createDatasetInput: CreateDatasetInput!): Dataset!
+  createProject(createProjectInput: CreateProjectInput!): Project!
+  removeContributor(id: ID!): Contributor!
+  removeDataset(id: ID!): Dataset!
+  removeProject(id: ID!): Project!
+  updateContributor(id: ID!, updateContributorInput: UpdateContributorInput!): Contributor!
+  updateDataset(id: ID!, updateDatasetInput: UpdateDatasetInput!): Dataset!
+  updateProject(id: ID!, updateProjectInput: UpdateProjectInput!): Project!
+}
+
+type Project {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  description: String
+  id: ID!
+
+  """Research Project Number"""
+  projectNumber: String!
+  updatedAt: DateTime!
+}
+
+type Query {
+  contributor(id: ID!): Contributor
+  contributors: [Contributor!]!
+  dataset(id: ID!): Dataset
+  datasets: [Dataset!]!
+  project(id: ID!): Project
+  projects: [Project!]!
+}
+
+input UpdateContributorInput {
+  contributorId: String
+  name: String
+}
+
+input UpdateDatasetInput {
+  accessPolicy: AccessPolicy
+  collectedAt: DateTime
+  collectedById: String
+  datasetNo: Int
+  managedById: String
+  managedFrom: DateTime
+  managedTo: DateTime
+  title: String
+}
+
+input UpdateProjectInput {
+  description: String
+  projectNumber: String
+}
