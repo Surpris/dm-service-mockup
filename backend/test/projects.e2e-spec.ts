@@ -1,4 +1,3 @@
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
@@ -44,18 +43,26 @@ describe('Projects (e2e)', () => {
       }
     `;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const res = await request(app.getHttpServer())
       .post('/graphql')
       .send({ query })
       .expect(200);
 
-    const data = res.body.data.createProject;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const data = res.body.data.createProject as {
+      id: string;
+      projectNumber: string;
+      description: string;
+    };
     projectId = data.id;
 
     expect(data.projectNumber).toBe(projectNumber);
     expect(data.description).toBe('E2E Test Project');
     // Check if ID is UUID v7 (simple regex check for UUID format, strictly verifying v7 might be complex but length/format is good start)
-    expect(data.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+    expect(data.id).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+    );
   });
 
   it('Read Project', async () => {
@@ -69,12 +76,14 @@ describe('Projects (e2e)', () => {
       }
     `;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const res = await request(app.getHttpServer())
       .post('/graphql')
       .send({ query })
       .expect(200);
 
-    const data = res.body.data.project;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const data = res.body.data.project as { id: string; projectNumber: string };
     expect(data.id).toBe(projectId);
     expect(data.projectNumber).toBe(projectNumber);
   });
@@ -91,12 +100,17 @@ describe('Projects (e2e)', () => {
       }
     `;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const res = await request(app.getHttpServer())
       .post('/graphql')
       .send({ query })
       .expect(200);
 
-    const data = res.body.data.updateProject;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const data = res.body.data.updateProject as {
+      id: string;
+      description: string;
+    };
     expect(data.id).toBe(projectId);
     expect(data.description).toBe('Updated Description');
   });
@@ -110,12 +124,14 @@ describe('Projects (e2e)', () => {
       }
     `;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const res = await request(app.getHttpServer())
       .post('/graphql')
       .send({ query })
       .expect(200);
 
-    const data = res.body.data.removeProject;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const data = res.body.data.removeProject as { id: string };
     expect(data.id).toBe(projectId);
   });
 
@@ -128,13 +144,15 @@ describe('Projects (e2e)', () => {
       }
     `;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const res = await request(app.getHttpServer())
       .post('/graphql')
       .send({ query })
       .expect(200);
 
-    // Expecting null or error depending on implementation. 
+    // Expecting null or error depending on implementation.
     // Usually 'project' query returns null if not found.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect(res.body.data.project).toBeNull();
   });
 
@@ -148,6 +166,8 @@ describe('Projects (e2e)', () => {
     expect(project?.id).toBe(projectId);
     expect(project?.deletedAt).not.toBeNull();
     // deletedAt should be a Date object or valid date string
-    expect(new Date(project!.deletedAt!).getTime()).toBeLessThanOrEqual(Date.now());
+    expect(new Date(project!.deletedAt!).getTime()).toBeLessThanOrEqual(
+      Date.now(),
+    );
   });
 });
