@@ -1,4 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { DMPMetadata } from '../../dmp-metadata/entities/dmp-metadata.entity';
 
 @ObjectType()
 export class Project {
@@ -19,4 +20,7 @@ export class Project {
 
   @Field(() => Date, { nullable: true })
   deletedAt?: Date;
+
+  @Field(() => DMPMetadata, { nullable: true })
+  metadata?: DMPMetadata;
 }
