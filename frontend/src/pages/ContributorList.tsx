@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client/react';
 import { DataGrid, type GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { Paper, Typography, Box, CircularProgress, Alert } from '@mui/material';
 import { GET_CONTRIBUTORS } from '../graphql/queries';
+import type { ContributorsData } from '../types/graphql';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -10,7 +11,7 @@ const columns: GridColDef[] = [
 ];
 
 export default function ContributorList() {
-  const { loading, error, data } = useQuery<any>(GET_CONTRIBUTORS);
+  const { loading, error, data } = useQuery<ContributorsData>(GET_CONTRIBUTORS);
 
   if (loading)
     return (

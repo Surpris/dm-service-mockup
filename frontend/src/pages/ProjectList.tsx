@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client/react';
 import { DataGrid, type GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { Paper, Typography, Box, CircularProgress, Alert } from '@mui/material';
 import { GET_PROJECTS } from '../graphql/queries';
+import type { ProjectsData } from '../types/graphql';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -16,7 +17,7 @@ const columns: GridColDef[] = [
 ];
 
 export default function ProjectList() {
-  const { loading, error, data } = useQuery<any>(GET_PROJECTS);
+  const { loading, error, data } = useQuery<ProjectsData>(GET_PROJECTS);
 
   if (loading)
     return (

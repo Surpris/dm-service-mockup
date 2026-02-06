@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client/react';
 import { DataGrid, type GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { Paper, Typography, Box, CircularProgress, Alert } from '@mui/material';
 import { GET_DATASETS } from '../graphql/queries';
+import type { Dataset, DatasetsData } from '../types/graphql';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -12,7 +13,7 @@ const columns: GridColDef[] = [
     field: 'projectNumber',
     headerName: 'Project',
     width: 150,
-    valueGetter: (_value: unknown, row: any) =>
+    valueGetter: (_value: unknown, row: Dataset) =>
       row.project?.projectNumber || '-',
   },
   {
@@ -24,7 +25,7 @@ const columns: GridColDef[] = [
 ];
 
 export default function DatasetList() {
-  const { loading, error, data } = useQuery<any>(GET_DATASETS);
+  const { loading, error, data } = useQuery<DatasetsData>(GET_DATASETS);
 
   if (loading)
     return (
