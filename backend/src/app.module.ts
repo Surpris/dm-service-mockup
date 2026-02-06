@@ -8,6 +8,7 @@ import { join } from 'path';
 import { ProjectModule } from './project/project.module';
 import { DatasetModule } from './dataset/dataset.module';
 import { ContributorModule } from './contributor/contributor.module';
+import { DMPMetadataModule } from './dmp-metadata/dmp-metadata.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ContributorModule } from './contributor/contributor.module';
     ProjectModule,
     DatasetModule,
     ContributorModule,
+    DMPMetadataModule,
   ],
   controllers: [AppController],
   providers: [AppService],

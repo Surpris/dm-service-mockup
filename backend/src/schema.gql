@@ -23,6 +23,10 @@ input CreateContributorInput {
   name: String!
 }
 
+input CreateDMPMetadataInput {
+  projectId: String!
+}
+
 input CreateDatasetInput {
   accessPolicy: AccessPolicy!
   collectedAt: DateTime
@@ -38,6 +42,14 @@ input CreateProjectInput {
 
   """Research Project Number"""
   projectNumber: String!
+}
+
+type DMPMetadata {
+  createdDate: DateTime!
+  id: ID!
+  lastUpdatedDate: DateTime!
+  project: Project
+  projectId: String!
 }
 
 type Dataset {
@@ -61,12 +73,15 @@ scalar DateTime
 
 type Mutation {
   createContributor(createContributorInput: CreateContributorInput!): Contributor!
+  createDMPMetadata(createDmpMetadataInput: CreateDMPMetadataInput!): DMPMetadata!
   createDataset(createDatasetInput: CreateDatasetInput!): Dataset!
   createProject(createProjectInput: CreateProjectInput!): Project!
   removeContributor(id: ID!): Contributor!
+  removeDMPMetadata(id: String!): DMPMetadata!
   removeDataset(id: ID!): Dataset!
   removeProject(id: ID!): Project!
   updateContributor(id: ID!, updateContributorInput: UpdateContributorInput!): Contributor!
+  updateDMPMetadata(updateDmpMetadataInput: UpdateDMPMetadataInput!): DMPMetadata!
   updateDataset(id: ID!, updateDatasetInput: UpdateDatasetInput!): Dataset!
   updateProject(id: ID!, updateProjectInput: UpdateProjectInput!): Project!
 }
@@ -76,6 +91,7 @@ type Project {
   deletedAt: DateTime
   description: String
   id: ID!
+  metadata: DMPMetadata
 
   """Research Project Number"""
   projectNumber: String!
@@ -83,10 +99,13 @@ type Project {
 }
 
 type Query {
+  allDmpMetadata: [DMPMetadata!]!
   contributor(id: ID!): Contributor
   contributors: [Contributor!]!
   dataset(id: ID!): Dataset
   datasets: [Dataset!]!
+  dmpMetadata(id: String!): DMPMetadata!
+  dmpMetadataByProject(projectId: String!): DMPMetadata!
   project(id: ID!): Project
   projects: [Project!]!
 }
@@ -94,6 +113,11 @@ type Query {
 input UpdateContributorInput {
   contributorId: String
   name: String
+}
+
+input UpdateDMPMetadataInput {
+  id: ID!
+  projectId: String
 }
 
 input UpdateDatasetInput {
