@@ -1,4 +1,3 @@
-
 import { useQuery } from '@apollo/client/react';
 import { DataGrid, type GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { Paper, Typography, Box, CircularProgress, Alert } from '@mui/material';
@@ -9,25 +8,34 @@ const columns: GridColDef[] = [
   { field: 'datasetNo', headerName: 'No.', width: 70, type: 'number' },
   { field: 'title', headerName: 'Title', width: 300 },
   { field: 'accessPolicy', headerName: 'Access Policy', width: 150 },
-  { 
-    field: 'projectNumber', 
-    headerName: 'Project', 
+  {
+    field: 'projectNumber',
+    headerName: 'Project',
     width: 150,
-    valueGetter: (_value: unknown, row: any) => row.project?.projectNumber || '-'
+    valueGetter: (_value: unknown, row: any) =>
+      row.project?.projectNumber || '-',
   },
-  { 
-    field: 'createdAt', 
-    headerName: 'Created At', 
-    width: 200, 
-    valueFormatter: (value: string) => new Date(value).toLocaleString()
+  {
+    field: 'createdAt',
+    headerName: 'Created At',
+    width: 200,
+    valueFormatter: (value: string) => new Date(value).toLocaleString(),
   },
 ];
 
 export default function DatasetList() {
   const { loading, error, data } = useQuery<any>(GET_DATASETS);
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>;
-  if (error) return <Alert severity="error">Error loading datasets: {error.message}</Alert>;
+  if (loading)
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  if (error)
+    return (
+      <Alert severity="error">Error loading datasets: {error.message}</Alert>
+    );
 
   return (
     <Box sx={{ height: 600, width: '100%' }}>
@@ -43,8 +51,8 @@ export default function DatasetList() {
               paginationModel: { page: 0, pageSize: 10 },
             },
             columns: {
-               columnVisibilityModel: { id: false } 
-            }
+              columnVisibilityModel: { id: false },
+            },
           }}
           pageSizeOptions={[5, 10, 25]}
           slots={{ toolbar: GridToolbar }}

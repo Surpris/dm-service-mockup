@@ -1,6 +1,23 @@
-
-import { Box, AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, CssBaseline } from '@mui/material';
-import { Dashboard as DashboardIcon, Folder as ProjectIcon, Storage as DatasetIcon, People as PeopleIcon, AccountTree as GraphIcon } from '@mui/icons-material';
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  CssBaseline,
+} from '@mui/material';
+import {
+  Dashboard as DashboardIcon,
+  Folder as ProjectIcon,
+  Storage as DatasetIcon,
+  People as PeopleIcon,
+  AccountTree as GraphIcon,
+} from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -20,7 +37,10 @@ export default function MainLayout() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
             RDM Service Mockup
@@ -32,7 +52,10 @@ export default function MainLayout() {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
         }}
       >
         <Toolbar />
@@ -40,13 +63,11 @@ export default function MainLayout() {
           <List>
             {menuItems.map((item) => (
               <ListItem key={item.text} disablePadding>
-                <ListItemButton 
+                <ListItemButton
                   selected={location.pathname === item.path}
                   onClick={() => navigate(item.path)}
                 >
-                  <ListItemIcon>
-                    {item.icon}
-                  </ListItemIcon>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} />
                 </ListItemButton>
               </ListItem>

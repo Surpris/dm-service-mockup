@@ -1,4 +1,3 @@
-
 import { useQuery } from '@apollo/client/react';
 import { DataGrid, type GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { Paper, Typography, Box, CircularProgress, Alert } from '@mui/material';
@@ -13,8 +12,18 @@ const columns: GridColDef[] = [
 export default function ContributorList() {
   const { loading, error, data } = useQuery<any>(GET_CONTRIBUTORS);
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>;
-  if (error) return <Alert severity="error">Error loading contributors: {error.message}</Alert>;
+  if (loading)
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  if (error)
+    return (
+      <Alert severity="error">
+        Error loading contributors: {error.message}
+      </Alert>
+    );
 
   return (
     <Box sx={{ height: 600, width: '100%' }}>
@@ -30,8 +39,8 @@ export default function ContributorList() {
               paginationModel: { page: 0, pageSize: 10 },
             },
             columns: {
-               columnVisibilityModel: { id: false } 
-            }
+              columnVisibilityModel: { id: false },
+            },
           }}
           pageSizeOptions={[5, 10, 25]}
           slots={{ toolbar: GridToolbar }}

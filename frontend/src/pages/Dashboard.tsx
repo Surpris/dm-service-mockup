@@ -1,4 +1,3 @@
-
 import { Box, Typography, Paper, Grid } from '@mui/material';
 
 export default function Dashboard() {

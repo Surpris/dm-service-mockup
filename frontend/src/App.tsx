@@ -1,4 +1,3 @@
-
 import { ApolloProvider } from '@apollo/client/react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
@@ -41,7 +40,7 @@ function App() {
         </BrowserRouter>
       </ThemeProvider>
     </ApolloProvider>
-  )
+  );
 }
 
-export default App
+export default App;

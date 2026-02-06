@@ -206,7 +206,7 @@ enum EntityType {
 - [x] [Backend] System Relationships (Project-Dataset, etc.) の実装（属性付きリレーション対応、リレーションの論理削除対応を含む）。
 - [x] [Backend] Seeding Script の実装 (開発用ダミーデータ投入)。
 - [x] [Frontend] React + Vite + MUI 環境構築。
-- [ ] [Frontend] テーブルビューによる一覧・検索画面の実装。
+- [x] [Frontend] テーブルビューによる一覧・検索画面の実装。
 
 ### Phase 2: ユーザー定義リレーションとグラフAPI (2週間)
 
