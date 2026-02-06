@@ -9,6 +9,8 @@ import { ProjectModule } from './project/project.module';
 import { DatasetModule } from './dataset/dataset.module';
 import { ContributorModule } from './contributor/contributor.module';
 import { DMPMetadataModule } from './dmp-metadata/dmp-metadata.module';
+import { UserDefinedRelationshipModule } from './user-defined-relationship/user-defined-relationship.module';
+import { GraphModule } from './graph/graph.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { DMPMetadataModule } from './dmp-metadata/dmp-metadata.module';
     DatasetModule,
     ContributorModule,
     DMPMetadataModule,
+    UserDefinedRelationshipModule,
+    GraphModule,
   ],
   controllers: [AppController],
   providers: [AppService],
