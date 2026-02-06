@@ -1,5 +1,7 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { DMPMetadata } from '../../dmp-metadata/entities/dmp-metadata.entity';
+import { Dataset } from '../../dataset/entities/dataset.entity';
+import { ProjectContributor } from './project-contributor.entity';
 
 @ObjectType()
 export class Project {
@@ -23,4 +25,10 @@ export class Project {
 
   @Field(() => DMPMetadata, { nullable: true })
   metadata?: DMPMetadata;
+
+  @Field(() => [Dataset], { nullable: true })
+  datasets?: Dataset[];
+
+  @Field(() => [ProjectContributor], { nullable: true })
+  contributors?: ProjectContributor[];
 }

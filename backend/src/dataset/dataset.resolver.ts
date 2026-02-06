@@ -1,7 +1,17 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { DatasetService } from './dataset.service';
 import { Dataset } from './entities/dataset.entity';
 import { CreateDatasetInput, UpdateDatasetInput } from './dto/dataset.input';
+import { Project } from '../project/entities/project.entity';
+import { Contributor } from '../contributor/entities/contributor.entity';
 
 @Resolver(() => Dataset)
 export class DatasetResolver {
@@ -35,5 +45,21 @@ export class DatasetResolver {
   @Mutation(() => Dataset)
   removeDataset(@Args('id', { type: () => ID }) id: string) {
     return this.datasetService.remove(id);
+  }
+
+  @ResolveField(() => Project)
+  project(@Parent() dataset: Dataset) {
+    return this.datasetService.findProject(dataset.projectId);
+  }
+
+  @ResolveField(() => Contributor)
+  collectedBy(@Parent() dataset: Dataset) {
+    return this.datasetService.findContributor(dataset.collectedById);
+  }
+
+  @ResolveField(() => Contributor, { nullable: true })
+  managedBy(@Parent() dataset: Dataset) {
+    if (!dataset.managedById) return null;
+    return this.datasetService.findContributor(dataset.managedById);
   }
 }

@@ -37,4 +37,17 @@ export class ProjectService {
       data: { deletedAt: new Date() },
     });
   }
+
+  findDatasets(projectId: string) {
+    return this.prisma.client.dataset.findMany({
+      where: { projectId, deletedAt: null },
+    });
+  }
+
+  findContributors(projectId: string) {
+    return this.prisma.client.projectContributor.findMany({
+      where: { projectId, deletedAt: null },
+      include: { contributor: true },
+    });
+  }
 }
