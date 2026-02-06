@@ -18,7 +18,7 @@ export const GET_DATASETS = gql`
       datasetNo
       title
       accessPolicy
-      createdAt
+      collectedAt
       project {
         projectNumber
       }

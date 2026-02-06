@@ -17,7 +17,7 @@ const mocks = [
             datasetNo: 123,
             title: 'Test Dataset',
             accessPolicy: 'PUBLIC',
-            createdAt: '2023-01-01T00:00:00Z',
+            collectedAt: '2023-01-01T00:00:00Z',
             project: {
               projectNumber: 'P001',
             },
@@ -58,7 +58,7 @@ describe('DatasetList', () => {
                 datasetNo: 123,
                 title: 'Test Dataset',
                 accessPolicy: 'PUBLIC',
-                createdAt: '2023-01-01T00:00:00Z',
+                collectedAt: '2023-01-01T00:00:00Z',
                 project: null,
               },
             ],

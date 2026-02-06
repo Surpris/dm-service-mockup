@@ -10,7 +10,7 @@ export interface Dataset {
   datasetNo: number;
   title: string;
   accessPolicy: string;
-  createdAt: string;
+  collectedAt: string;
   project: {
     projectNumber: string;
   };

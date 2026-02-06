@@ -17,8 +17,8 @@ const columns: GridColDef[] = [
       row.project?.projectNumber || '-',
   },
   {
-    field: 'createdAt',
-    headerName: 'Created At',
+    field: 'collectedAt',
+    headerName: 'Collected At',
     width: 200,
     valueFormatter: (value: string) => new Date(value).toLocaleString(),
   },
