@@ -15,10 +15,12 @@ Object.defineProperty(global, 'sessionStorage', {
 });
 
 // Node 22+ のlocalStorage警告を抑制
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const originalEmitWarning = process.emitWarning;
 process.emitWarning = (warning, ...args: any[]) => {
   if (typeof warning === 'string' && warning.includes('--localstorage-file')) {
     return;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   return (originalEmitWarning as any).call(process, warning, ...args);
 };
