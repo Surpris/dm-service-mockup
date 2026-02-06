@@ -15,8 +15,10 @@ describe('ProjectResolver', () => {
     remove: jest.fn(),
   };
 
+  let module: TestingModule;
+
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         ProjectResolver,
         {
@@ -30,7 +32,8 @@ describe('ProjectResolver', () => {
     // service = module.get<ProjectService>(ProjectService);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await module.close();
     jest.clearAllMocks();
   });
 
@@ -40,7 +43,7 @@ describe('ProjectResolver', () => {
 
   describe('createProject', () => {
     it('should call service.create with correct data', async () => {
-      const input: CreateProjectInput = { name: 'New Project' };
+      const input: CreateProjectInput = { projectNumber: 'New Project' };
       const expectedResult = { id: 'uuid', ...input };
       mockProjectService.create.mockResolvedValue(expectedResult);
 
@@ -79,7 +82,7 @@ describe('ProjectResolver', () => {
   describe('updateProject', () => {
     it('should call service.update with id and input', async () => {
       const id = 'uuid-1';
-      const input: UpdateProjectInput = { id, name: 'Updated' };
+      const input: UpdateProjectInput = { projectNumber: 'Updated' };
       const expectedResult = { id, name: 'Updated' };
       mockProjectService.update.mockResolvedValue(expectedResult);
 

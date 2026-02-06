@@ -18,8 +18,10 @@ describe('ContributorResolver', () => {
     remove: jest.fn(),
   };
 
+  let module: TestingModule;
+
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         ContributorResolver,
         {
@@ -33,7 +35,8 @@ describe('ContributorResolver', () => {
     // service = module.get<ContributorService>(ContributorService);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await module.close();
     jest.clearAllMocks();
   });
 
@@ -45,7 +48,7 @@ describe('ContributorResolver', () => {
     it('should call service.create with correct data', async () => {
       const input: CreateContributorInput = {
         name: 'New Contributor',
-        email: 'test@example.com',
+        contributorId: 'CONT-001',
       };
       const expectedResult = { id: 'uuid', ...input };
       mockContributorService.create.mockResolvedValue(expectedResult);
@@ -85,7 +88,7 @@ describe('ContributorResolver', () => {
   describe('updateContributor', () => {
     it('should call service.update with id and input', async () => {
       const id = 'uuid-1';
-      const input: UpdateContributorInput = { id, name: 'Updated' };
+      const input: UpdateContributorInput = { name: 'Updated' };
       const expectedResult = { id, name: 'Updated' };
       mockContributorService.update.mockResolvedValue(expectedResult);
 
