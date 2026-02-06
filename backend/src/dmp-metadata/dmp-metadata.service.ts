@@ -41,7 +41,6 @@ export class DMPMetadataService {
   }
 
   update(id: string, updateDmpMetadataInput: UpdateDMPMetadataInput) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id: _, ...data } = updateDmpMetadataInput;
     return this.prisma.client.dMPMetadata.update({
       where: { id },

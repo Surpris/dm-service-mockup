@@ -28,7 +28,7 @@ export class UserDefinedRelationshipService {
   }
 
   update(id: string, updateInput: UpdateUserDefinedRelationshipInput) {
-    const { id: _, ...data } = updateInput;
+    const { id: _unused, ...data } = updateInput;
     return this.prisma.client.userDefinedRelationship.update({
       where: { id },
       data: data,

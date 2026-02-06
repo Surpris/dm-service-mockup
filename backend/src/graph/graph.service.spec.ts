@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GraphService } from './graph.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { NodeType } from './dto/graph.model';
+import { NodeType, GraphEdge } from './dto/graph.model';
 
 const mockPrismaService = {
   client: {
@@ -93,13 +93,13 @@ describe('GraphService', () => {
         id: 'data-1',
         type: NodeType.DATASET,
         label: 'Dataset 1',
-        data: expect.any(String),
+        data: expect.any(String) as string,
       });
       expect(result.nodes).toContainEqual({
         id: 'cont-1',
         type: NodeType.CONTRIBUTOR,
         label: 'Alice',
-        data: expect.any(String),
+        data: expect.any(String) as string,
       });
 
       // Check Edges
@@ -111,7 +111,7 @@ describe('GraphService', () => {
 
       // Verify Project -> Dataset edge
       const projDataEdge = result.edges.find(
-        (e: any) =>
+        (e: GraphEdge) =>
           e.source === 'proj-1' &&
           e.target === 'data-1' &&
           e.type === 'HAS_DATASET',
@@ -120,7 +120,7 @@ describe('GraphService', () => {
 
       // Verify Dataset -> Contributor edge
       const dataContEdge = result.edges.find(
-        (e: any) =>
+        (e: GraphEdge) =>
           e.source === 'data-1' &&
           e.target === 'cont-1' &&
           e.type === 'COLLECTED_BY',
@@ -129,7 +129,7 @@ describe('GraphService', () => {
 
       // Verify Project -> Contributor edge
       const projContEdge = result.edges.find(
-        (e: any) =>
+        (e: GraphEdge) =>
           e.source === 'proj-1' &&
           e.target === 'cont-1' &&
           e.type === 'PROJECT_MEMBER',
@@ -137,9 +137,9 @@ describe('GraphService', () => {
       expect(projContEdge).toBeDefined();
 
       // Verify User Defined Edge
-      const userEdge = result.edges.find((e: any) => e.id === 'ur-1');
+      const userEdge = result.edges.find((e: GraphEdge) => e.id === 'ur-1');
       expect(userEdge).toBeDefined();
-      expect(userEdge.type).toBe('RELATED_TO');
+      expect(userEdge?.type).toBe('RELATED_TO');
     });
   });
 });

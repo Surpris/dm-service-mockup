@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { GraphData, GraphNode, GraphEdge, NodeType } from './dto/graph.model';
-import { EntityType } from '@prisma/client';
 
 @Injectable()
 export class GraphService {
   constructor(private prisma: PrismaService) {}
 
-  async getGraphData(filter?: any): Promise<GraphData> {
+  async getGraphData(_filter?: any): Promise<GraphData> {
     const [
       projects,
       datasets,
