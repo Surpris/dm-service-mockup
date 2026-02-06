@@ -1,53 +1,59 @@
-# 研究データマネジメント（RDM）システム (RDM System)
+# 研究データマネジメント (RDM) システム モックアップ
 
->[!NOTE]
-> 本プロジェクトは、研究プロジェクト、データセット、貢献者（研究者等）の関係性を管理・可視化するWebアプリケーション開発のモックアッププロジェクトです。
+![Status](https://img.shields.io/badge/Status-Phase%201%20Completed-success?style=for-the-badge) ![Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture-blue?style=for-the-badge) ![GraphQL](https://img.shields.io/badge/API-GraphQL-E10098?style=for-the-badge)
 
-## プロジェクト概要
+---
 
-本システムは、従来のリレーショナルなデータ管理に加え、**「ユーザー定義リレーションシップ」**と**「知識グラフ（Knowledge Graph）表示」**を導入することで、研究データの文脈（Context）を柔軟に記録・発見できる基盤を構築します。
+## 🌟 プロジェクト概要
 
-## 技術スタック
+本プロジェクトは、研究データマネジメント（RDM）における「データ、人、プロジェクト」の複雑な関係性を管理・可視化するための次世代型プラットフォームのモックアップです。
 
-| レイヤー | 技術選定 | 役割 |
-| --- | --- | --- |
-| **Frontend** | React, TypeScript, Vite | SPA基盤 |
-| **UI Framework** | Material-UI (MUI) | ベースUIコンポーネント |
-| **Visualization** | React Flow (+ dagre/elkjs) | 知識グラフの描画・操作 |
-| **Backend** | Nest.js (TypeScript) | APIサーバー |
-| **API Protocol** | GraphQL (Code-first) | フロントエンド通信 |
-| **Database** | PostgreSQL + Prisma | データ永続化・操作 |
-| **ID Strategy** | UUID v7 | 時系列ソート可能なID |
+従来のリレーショナルな管理（誰がどのデータを作ったか）に留まらず、**「ユーザー定義リレーションシップ」**を通じてデータ間の由来（Derivation）や依存関係をナレッジグラフとして構築できる柔軟性を備えています。
 
-## 主な機能
+## 🏗️ システム構造
 
-1. **データ管理 (CRUD)**
-    * システム定義エンティティ（Project, Dataset, Contributor）の管理
-    * UUID v7 による一意なID管理
-    * 論理削除の実装
-    * **User-Defined Relations**: 任意のエンティティ間にユーザーが独自の関係性を定義可能
+本プロジェクトはモノレポ構成となっており、以下の主要コンポーネントで構成されています。
 
-2. **テーブルビュー (List View)**
-    * MUI DataGrid を用いた一覧表示
-    * 高度な検索・フィルタリング・ページネーション
+- **`backend/`**: NestJS + GraphQL (Apollo) + Prisma による高機能APIサーバー
+- **`docs/`**: 詳細な開発仕様書・論理データモデル定義
 
-3. **ナレッジグラフビュー (Graph View)**
-    * React Flow を用いたデータ関係性の可視化
-    * ノード（エンティティ）とエッジ（関係性）のインタラクティブな操作
-    * フィルタリング機能（エンティティタイプ、リレーションタイプ等）
+## 🚀 現在の進捗状況 (Phase 1 完了)
 
-## データモデル構造
+現在、バックエンドの基盤構築およびコア機能の実装が完了しています。
 
-* **System Defined Entities**: 厳密に管理される基本エンティティ（Project, Dataset, Contributor）
-* **User Defined Relationships**: 柔軟に追加可能なエンティティ間の関係性
+- [x] **高度なID戦略**: 全エンティティでの UUID v7 (時系列ソート可能) の採用
+- [x] **透過的論理削除**: データベースレベルでの Soft Delete 機構の実装
+- [x] **コアCRUD**: Project, Dataset, Contributor, DMPMetadata の実装
+- [x] **システムリレーション**: エンティティ間の厳密な関係性定義
+- [x] **シーディング基盤**: 開発用初期データの自動投入スクリプト
 
-## 開発ロードマップ
+## 🛠️ クイックスタート
 
-* **Phase 1**: 基盤構築とCore CRUD
-* **Phase 2**: ユーザー定義リレーションとグラフAPIの実装
-* **Phase 3**: ナレッジグラフ可視化（React Flow導入）
-* **Phase 4**: 統合テストとガバナンス機能
+### 1. データベースの起動
 
-## ドキュメント
+```bash
+docker-compose up -d
+```
 
-詳細な仕様については [docs/specifications.md](./docs/specifications.md) を参照してください。
+### 2. バックエンドのセットアップ
+
+```bash
+cd backend
+npm install
+npx prisma migrate dev
+npx prisma db seed
+npm run start:dev
+```
+
+バックエンドが起動すると、`http://localhost:3000/graphql` で Apollo Sandbox を利用可能です。
+
+## 📅 ロードマップ
+
+1. **Phase 1 (完了)**: バックエンド基盤とコアCRUDの実装
+2. **Phase 2 (進行中)**: ユーザー定義リレーションの実装とグラフデータの統合抽出API
+3. **Phase 3**: React Flow を用いたフロントエンドでのグラフ可視化
+4. **Phase 4**: 統合テストとデータのガバナンス（関係性の昇格機能等）
+
+---
+
+詳細な技術仕様については [docs/specifications.md](./docs/specifications.md) を参照してください。
