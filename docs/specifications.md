@@ -193,7 +193,7 @@ enum EntityType {
 
 ## 5. 開発計画 (Development Plan)
 
-開発プロセスは **Wモデル（W-Model）** を意識し、仕様定義とテスト設計を並行して進めます。
+開発プロセスは **仕様駆動・テスト駆動・Wモデル（W-Model）** を意識し、仕様定義とテスト設計を並行して進めます。特にテスト駆動に関しては [.agent/rules/testing.md](../.agent/rules/testing.md) を必ず参考にします。
 
 ### Phase 1: 基盤構築とCore CRUD (2週間)
 
