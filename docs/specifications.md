@@ -212,9 +212,9 @@ enum EntityType {
 
 - **Goal:** ユーザーが自由にリレーションを追加でき、APIがグラフ構造を返却できる。
 - **Tasks:**
-- [ ] [Backend] `UserDefinedRelationship` モデルの実装。
-- [ ] [Backend] グラフデータ生成ロジックの実装（System/User Relationの統合）。
-- [ ] [Backend] グラフ検索用クエリ（`getGraphData`）の実装。
+- [x] [Backend] `UserDefinedRelationship` モデルの実装。
+- [x] [Backend] グラフデータ生成ロジックの実装（System/User Relationの統合）。
+- [x] [Backend] グラフ検索用クエリ（`getGraphData`）の実装。
 
 ### Phase 3: ナレッジグラフ可視化 (2〜3週間)
 

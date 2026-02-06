@@ -48,6 +48,16 @@ input CreateProjectInput {
   projectNumber: String!
 }
 
+input CreateUserDefinedRelationshipInput {
+  createdBy: String!
+  properties: String
+  relationshipType: String!
+  sourceId: String!
+  sourceType: EntityType!
+  targetId: String!
+  targetType: EntityType!
+}
+
 type DMPMetadata {
   createdDate: DateTime!
   id: ID!
@@ -78,19 +88,55 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+enum EntityType {
+  CONTRIBUTOR
+  DATASET
+  PROJECT
+}
+
+type GraphData {
+  edges: [GraphEdge!]!
+  nodes: [GraphNode!]!
+}
+
+type GraphEdge {
+  data: String
+  id: ID!
+  label: String
+  source: String!
+  target: String!
+  type: String!
+}
+
+type GraphNode {
+  data: String
+  id: ID!
+  label: String!
+  type: NodeType!
+}
+
 type Mutation {
   createContributor(createContributorInput: CreateContributorInput!): Contributor!
   createDMPMetadata(createDmpMetadataInput: CreateDMPMetadataInput!): DMPMetadata!
   createDataset(createDatasetInput: CreateDatasetInput!): Dataset!
   createProject(createProjectInput: CreateProjectInput!): Project!
+  createUserDefinedRelationship(input: CreateUserDefinedRelationshipInput!): UserDefinedRelationship!
   removeContributor(id: ID!): Contributor!
   removeDMPMetadata(id: String!): DMPMetadata!
   removeDataset(id: ID!): Dataset!
   removeProject(id: ID!): Project!
+  removeUserDefinedRelationship(id: String!): UserDefinedRelationship!
   updateContributor(id: ID!, updateContributorInput: UpdateContributorInput!): Contributor!
   updateDMPMetadata(updateDmpMetadataInput: UpdateDMPMetadataInput!): DMPMetadata!
   updateDataset(id: ID!, updateDatasetInput: UpdateDatasetInput!): Dataset!
   updateProject(id: ID!, updateProjectInput: UpdateProjectInput!): Project!
+  updateUserDefinedRelationship(input: UpdateUserDefinedRelationshipInput!): UserDefinedRelationship!
+}
+
+enum NodeType {
+  CONTRIBUTOR
+  DATASET
+  PROJECT
 }
 
 type Project {
@@ -133,8 +179,11 @@ type Query {
   datasets: [Dataset!]!
   dmpMetadata(id: String!): DMPMetadata!
   dmpMetadataByProject(projectId: String!): DMPMetadata!
+  graph(filter: String): GraphData!
   project(id: ID!): Project
   projects: [Project!]!
+  userDefinedRelationship(id: String!): UserDefinedRelationship!
+  userDefinedRelationships: [UserDefinedRelationship!]!
 }
 
 input UpdateContributorInput {
@@ -161,4 +210,22 @@ input UpdateDatasetInput {
 input UpdateProjectInput {
   description: String
   projectNumber: String
+}
+
+input UpdateUserDefinedRelationshipInput {
+  id: String!
+  properties: String
+  relationshipType: String
+}
+
+type UserDefinedRelationship {
+  createdAt: DateTime!
+  createdBy: String!
+  id: ID!
+  properties: String
+  relationshipType: String!
+  sourceId: String!
+  sourceType: EntityType!
+  targetId: String!
+  targetType: EntityType!
 }
