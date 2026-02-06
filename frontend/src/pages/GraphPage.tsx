@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import GraphContainer from '../features/graph/components/GraphContainer';
 

@@ -1,14 +1,14 @@
-import { Node, Edge } from 'reactflow';
+import type { Node, Edge } from 'reactflow';
 
 // Define types locally since we don't have generated types yet
-interface BackendGraphNode {
+export interface BackendGraphNode {
   id: string;
   label: string;
   type: string; // 'PROJECT', 'DATASET', 'CONTRIBUTOR'
   data?: string | null;
 }
 
-interface BackendGraphEdge {
+export interface BackendGraphEdge {
   id: string;
   source: string;
   target: string;
@@ -17,7 +17,7 @@ interface BackendGraphEdge {
   data?: string | null;
 }
 
-interface BackendGraphData {
+export interface BackendGraphData {
   nodes: BackendGraphNode[];
   edges: BackendGraphEdge[];
 }

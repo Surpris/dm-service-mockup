@@ -1,5 +1,6 @@
-import React, { memo } from 'react';
-import { Handle, Position, NodeProps } from 'reactflow';
+import { memo } from 'react';
+import { Handle, Position } from 'reactflow';
+import type { NodeProps } from 'reactflow';
 import { Database } from 'lucide-react';
 
 const DatasetNode = ({ data }: NodeProps) => {

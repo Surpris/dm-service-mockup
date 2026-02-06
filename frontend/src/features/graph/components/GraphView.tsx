@@ -1,12 +1,9 @@
-import React, { useCallback } from 'react';
-import ReactFlow, {
-  Controls,
-  Background,
+import React from 'react';
+import ReactFlow, { Controls, Background, Panel } from 'reactflow';
+import type {
   Node,
   Edge,
   Connection,
-  addEdge,
-  Panel,
   NodeTypes,
   OnNodesChange,
   OnEdgesChange,
@@ -29,6 +26,7 @@ interface GraphViewProps {
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onLayout: (direction: string) => void;
+  onConnect: (connection: Connection) => void;
 }
 
 const GraphView: React.FC<GraphViewProps> = ({
@@ -37,12 +35,15 @@ const GraphView: React.FC<GraphViewProps> = ({
   onNodesChange,
   onEdgesChange,
   onLayout,
+  onConnect,
 }) => {
+  /*
   const onConnect = useCallback(
     (params: Connection) =>
       onEdgesChange((eds: Edge[]) => addEdge(params, eds)),
     [onEdgesChange],
   );
+  */
 
   return (
     <div className="h-full w-full min-h-[500px] border border-gray-200 rounded-lg">

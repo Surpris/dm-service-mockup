@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getLayoutedElements } from './layout';
-import { Node, Edge } from 'reactflow';
+import type { Node, Edge } from 'reactflow';
 
 describe('getLayoutedElements', () => {
   it('should assign positions to nodes based on dagre layout', () => {

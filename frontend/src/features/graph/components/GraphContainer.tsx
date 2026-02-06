@@ -1,5 +1,11 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react';
-import { ReactFlowProvider, useNodesState, useEdgesState } from 'reactflow';
+import { useEffect, useCallback, useState, useMemo } from 'react';
+import {
+  ReactFlowProvider,
+  useNodesState,
+  useEdgesState,
+  addEdge,
+} from 'reactflow';
+import type { Connection } from 'reactflow';
 import GraphView from './GraphView';
 import GraphFilterSidebar from './GraphFilterSidebar';
 import { useGraphData } from '../hooks/useGraphData';
@@ -67,6 +73,11 @@ const GraphContainerContent = () => {
     [nodes, edges, setNodes, setEdges],
   );
 
+  const onConnect = useCallback(
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges],
+  );
+
   if (loading) return <div className="p-4">Loading graph data...</div>;
   if (error)
     return (
@@ -84,6 +95,7 @@ const GraphContainerContent = () => {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onLayout={onLayout}
+          onConnect={onConnect}
         />
       </div>
       <GraphFilterSidebar filters={filters} onFilterChange={setFilters} />

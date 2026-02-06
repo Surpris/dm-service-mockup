@@ -1,5 +1,6 @@
 import dagre from 'dagre';
-import { Node, Edge, Position } from 'reactflow';
+import { Position } from 'reactflow';
+import type { Node, Edge } from 'reactflow';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
