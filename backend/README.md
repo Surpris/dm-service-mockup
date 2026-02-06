@@ -1,133 +1,121 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# RDM backend service
 
+[![Nest Logo](https://nestjs.com/img/logo-small.svg)](http://nestjs.com/)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+データ管理計画（DMP）および研究プロジェクトのメタデータを管理するための、モダンでスケーラブルなバックエンドAPIサービス。
 
-## Description
+![Node Version](https://img.shields.io/badge/node-%3E%3D20.0.0-339933?style=for-the-badge&logo=node.js&logoColor=white) ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white) ![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![GraphQL](https://img.shields.io/badge/-GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Features & Implementation Details
+## 🚀 概要
 
-### Database & ORM
+このプロジェクトは、NestJS、GraphQL、および Prisma を活用した、研究データ管理システムのモックアップバックエンドです。
+高度な ID 戦略（UUID v7）や透過的な論理削除など、エンタープライズレベルのベストプラクティスを導入しています。
 
+## 🛠️ 技術スタック
+
+- **Core**: [NestJS](https://github.com/nestjs/nest) (v11)
+- **API**: GraphQL (Apollo Server 5)
 - **Database**: PostgreSQL (v16+)
-- **ORM**: Prisma (v5.22.0)
-  - *Note*: We are pinning Prisma to v5.22.0 (LTS stable) to avoid initialization issues observed with v7.x.
+- **ORM**: [Prisma](https://www.prisma.io/) (v5.22.0)
+  - *安定性のため v5.22.0 に固定されています。*
+- **Auth/ID**: UUID v7 (時系列ソート可能なUUID)
 
-### ID Strategy: UUID v7
+## ✨ 主要機能と実装詳細
 
-- All entities use **UUID v7** as their Primary Key (`id`).
-- **Generation**:
-  - Implemented via Prisma Client Extension (`src/prisma/prisma.extension.ts`).
-  - Automatically generates a UUID v7 if `id` is not provided during `create` or `createMany`.
-  - Uses the `uuid` library (v11+).
+### 🆔 UUID v7 ID 戦略
 
-### Logical Deletion (Soft Delete)
+全エンティティのプライマリキーには **UUID v7** を採用しています。
 
-- **Mechanism**:
-  - Implemented via Prisma Client Extension.
-  - Intercepts `delete` and `deleteMany` operations and converts them to `update` operations that set `deletedAt = new Date()`.
-  - Intercepts `findUnique`, `findFirst`, `findMany` operations to filter out records where `deletedAt` is not null.
-- **Target Models**: `Project`, `Contributor`, `Dataset`, `UserDefinedRelationship`.
-- **Note on `findUnique`**: If a record exists but is effectively deleted (`deletedAt != null`), the extension returns `null`.
+- **実装方法**: `src/prisma/prisma.extension.ts` にて Prisma Client Extension として実装。
+- **自動生成**: `create` または `createMany` 時に ID が指定されていない場合、自動的に UUID v7 が付与されます。
 
-## Verification
+### 🗑️ 透過的論理削除 (Soft Delete)
 
-To verify the UUID v7 and Soft Delete functionality, you can run the provided debug script:
+データ削除時、物理的な削除ではなく `deletedAt` カラムを更新する論理削除を採用しています。
 
-```bash
-# Ensure database is running
-$ docker-compose up -d
+- **仕組み**: Prisma Client Extension が `delete` 系の操作を `update` ( `deletedAt` 設定) に変換します。
+- **自動フィルタリング**: `findUnique`, `findFirst`, `findMany` などのクエリ時に、`deletedAt` が NULL でないレコードは自動的に除外されます。
 
-# Run verification script
-$ npx ts-node src/debug/test-uuid-soft-delete.ts
-```
+### 📊 データモデル (Core Entities)
 
-## Project setup
+- **Project**: 研究プロジェクト
+- **Contributor**: プロジェクト貢献者（PI, データ管理者など）
+- **Dataset**: プロジェクトに関連付けられたデータセット
+- **DMPMetadata**: DMP固有の詳細メタデータ
+- **UserDefinedRelationship**: エンティティ間の柔軟なユーザー定義リレーション
+
+---
+
+## 🏃 起動方法
+
+### 1. 依存関係のインストール
 
 ```bash
 npm install
 ```
 
-## Compile and run the project
+### 2. 環境構築とデータベース起動
+
+Docker Compose を使用して開発用データベースを起動します。
 
 ```bash
-# development
-$ npm run start
+docker-compose up -d
+```
 
-# watch mode
+### 3. マイグレーションとシーディング
+
+データベースのセットアップと、開発用ダミーデータの投入を行います。
+
+```bash
+npx prisma migrate dev
+npx prisma db seed
+```
+
+### 4. アプリケーションの起動
+
+```bash
+# 開発モード (watch)
 $ npm run start:dev
 
-# production mode
+# デバッグモード
+$ npm run start:debug
+
+# 本番ビルド
+$ npm run build
 $ npm run start:prod
 ```
 
-## Run tests
+---
+
+## 🧪 テスト
+
+品質管理のため、Jest を使用した網羅的なテストを実施しています。
 
 ```bash
-# unit tests
+# ユニットテスト
 $ npm run test
 
-# e2e tests
+# E2Eテスト
 $ npm run test:e2e
 
-# test coverage
+# カバレッジレポート
 $ npm run test:cov
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🔍 検証用スクリプト
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+UUID v7 および論理削除の動作を確認するためのデバッグスクリプトが用意されています。
 
 ```bash
-npm install -g @nestjs/mau
-mau deploy
+npx ts-node src/debug/test-uuid-soft-delete.ts
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
+## 📄 ライセンス
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
