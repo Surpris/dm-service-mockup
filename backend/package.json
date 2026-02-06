@@ -84,5 +84,8 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!uuid)/"
     ]
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
