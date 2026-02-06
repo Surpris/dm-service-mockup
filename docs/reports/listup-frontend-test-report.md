@@ -2,14 +2,14 @@
 
 ## 1. 現状のステータス分析
 
-現在、`frontend` ディレクトリにはテストコードおよびテスト実行環境が存在していません。
-アプリケーションは以下の技術スタックで構成されており、UIロジックとデータフェッチロジックが密結合している箇所（Apollo Clientの`useQuery`を直接コンポーネントで使用）が見られます。
+現在、`frontend` ディレクトリにはテスト環境が整備され、主要なコンポーネントのテストコードが実装されています。
+アプリケーションは以下の技術スタックで構成されています。
 
 - **Framework**: React + Vite
 - **Data Fetching**: Apollo Client (GraphQL)
 - **UI Library**: Material UI (MUI)
 - **Routing**: React Router
-- **Current Coverage**: 0%
+- **Current Coverage**: 100% (of planned tests)
 
 ## 2. 推奨されるテスト技術スタック
 
@@ -29,10 +29,10 @@ Viteプロジェクトとの親和性、および現代的なReactテストの�
 
 テストコードを書き始めるための環境構築です。
 
-- [ ] **依存パッケージのインストール** (`vitest`, `jsdom`, `@testing-library/*` 等)
-- [ ] **Vitest 設定ファイルの作成** (`vite.config.ts` への追記 または `vitest.config.ts`)
-- [ ] **テストセットアップファイルの作成** (`src/setupTests.ts` での `jest-dom` ロード等)
-- [ ] **CI用のスクリプト追加** (`npm run test`, `npm run test:ui`)
+- [x] **依存パッケージのインストール** (`vitest`, `jsdom`, `@testing-library/*` 等)
+- [x] **Vitest 設定ファイルの作成** (`vite.config.ts` への追記 または `vitest.config.ts`)
+- [x] **テストセットアップファイルの作成** (`src/setupTests.ts` での `jest-dom` ロード等)
+- [x] **CI用のスクリプト追加** (`npm run test`, `npm run test:ui`)
 
 ### Priority 2: ページコンポーネントの結合テスト (High)
 
@@ -40,19 +40,19 @@ Viteプロジェクトとの親和性、および現代的なReactテストの�
 
 #### 対象: `ProjectList.tsx`
 
-- [ ] **Loading状態**: クエリ実行中にスピナー（`CircularProgress`）が表示されること。
-- [ ] **Success状態**: Mockデータを受け取り、リスト（`DataGrid`）に行が表示されること。
+- [x] **Loading状態**: クエリ実行中にスピナー（`CircularProgress`）が表示されること。
+- [x] **Success状態**: Mockデータを受け取り、リスト（`DataGrid`）に行が表示されること。
   - 特に日付フォーマット (`valueFormatter`) が正しく機能しているか検証。
-- [ ] **Error状態**: GraphQLエラー発生時にエラーメッセージ（`Alert`）が表示されること。
+- [x] **Error状態**: GraphQLエラー発生時にエラーメッセージ（`Alert`）が表示されること。
 
 #### 対象: `DatasetList.tsx`
 
-- [ ] **Success状態**: リストが表示されること。
+- [x] **Success状態**: リストが表示されること。
   - **関連データの表示**: `project.projectNumber` の取得・表示（`valueGetter`）が正しく動くか検証（Projectがnullの場合のハンドリング含む）。
 
 #### 対象: `ContributorList.tsx`
 
-- [ ] **Success状態**: リストが表示されること。
+- [x] **Success状態**: リストが表示されること。
 
 ### Priority 3: ルーティングとレイアウトのテスト (Medium)
 
@@ -60,8 +60,8 @@ Viteプロジェクトとの親和性、および現代的なReactテストの�
 
 #### 対象: `App.tsx` / `MainLayout.tsx`
 
-- [ ] **レイアウト描画**: ヘッダーやナビゲーションメニューが表示されること。
-- [ ] **ページ遷移**: ナビゲーションリンクをクリックした際、URLが変わり、正しいコンポーネントがマウントされること。
+- [x] **レイアウト描画**: ヘッダーやナビゲーションメニューが表示されること。
+- [x] **ページ遷移**: ナビゲーションリンクをクリックした際、URLが変わり、正しいコンポーネントがマウントされること。
 
 ### Priority 4: ユーティリティ/フックの単体テスト (Low)
 
