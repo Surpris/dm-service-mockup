@@ -193,7 +193,7 @@ enum EntityType {
 
 ## 5. 開発計画 (Development Plan)
 
-開発プロセスは **Wモデル（W-Model）** を意識し、仕様定義とテスト設計を並行して進めます。
+開発プロセスは **仕様駆動・テスト駆動・Wモデル（W-Model）** を意識し、仕様定義とテスト設計を並行して進めます。特にテスト駆動に関しては [.agent/rules/testing.md](../.agent/rules/testing.md) を必ず参考にします。
 
 ### Phase 1: 基盤構築とCore CRUD (2週間)
 
@@ -206,7 +206,7 @@ enum EntityType {
 - [x] [Backend] System Relationships (Project-Dataset, etc.) の実装（属性付きリレーション対応、リレーションの論理削除対応を含む）。
 - [x] [Backend] Seeding Script の実装 (開発用ダミーデータ投入)。
 - [x] [Frontend] React + Vite + MUI 環境構築。
-- [ ] [Frontend] テーブルビューによる一覧・検索画面の実装。
+- [x] [Frontend] テーブルビューによる一覧・検索画面の実装。
 
 ### Phase 2: ユーザー定義リレーションとグラフAPI (2週間)
 
