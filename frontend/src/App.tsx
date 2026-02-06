@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import ProjectList from './pages/ProjectList';
 import DatasetList from './pages/DatasetList';
 import ContributorList from './pages/ContributorList';
+import GraphPage from './pages/GraphPage';
 
 // Create a default theme
 const theme = createTheme({
@@ -34,7 +35,7 @@ function App() {
               <Route path="projects" element={<ProjectList />} />
               <Route path="datasets" element={<DatasetList />} />
               <Route path="contributors" element={<ContributorList />} />
-              {/* <Route path="graph" element={<GraphView />} /> */}
+              <Route path="graph" element={<GraphPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
