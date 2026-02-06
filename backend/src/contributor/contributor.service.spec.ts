@@ -18,8 +18,10 @@ const mockPrismaClient = {
 describe('ContributorService', () => {
   let service: ContributorService;
 
+  let module: TestingModule;
+
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         ContributorService,
         {
@@ -34,7 +36,8 @@ describe('ContributorService', () => {
     service = module.get<ContributorService>(ContributorService);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await module.close();
     jest.clearAllMocks();
   });
 
@@ -46,7 +49,7 @@ describe('ContributorService', () => {
     it('should call prisma.contributor.create with correct data', async () => {
       const input: CreateContributorInput = {
         name: 'Test Contributor',
-        email: 'test@example.com',
+        contributorId: 'CONT-001',
       };
       const expectedResult = { id: 'uuid', ...input };
       mockPrismaClient.contributor.create.mockResolvedValue(expectedResult);
@@ -101,7 +104,7 @@ describe('ContributorService', () => {
   describe('update', () => {
     it('should call prisma.contributor.update with correct params', async () => {
       const id = 'uuid-1';
-      const input: UpdateContributorInput = { id, name: 'Updated' };
+      const input: UpdateContributorInput = { name: 'Updated' };
       const expectedResult = { id, name: 'Updated' };
       mockPrismaClient.contributor.update.mockResolvedValue(expectedResult);
 

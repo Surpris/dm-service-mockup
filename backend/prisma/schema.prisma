@@ -56,6 +56,8 @@ model ProjectContributor {
   contributorId String
   contributor   Contributor @relation(fields: [contributorId], references: [id])
   role          ProjectRole // Enum: PI, Co-Investigator, etc.
+
+  deletedAt     DateTime?
 }
 
 model Dataset {

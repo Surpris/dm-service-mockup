@@ -40,4 +40,23 @@ export class ContributorService {
       data: { deletedAt: new Date() },
     });
   }
+
+  findProjects(contributorId: string) {
+    return this.prisma.client.projectContributor.findMany({
+      where: { contributorId, deletedAt: null },
+      include: { project: true },
+    });
+  }
+
+  findManagedDatasets(contributorId: string) {
+    return this.prisma.client.dataset.findMany({
+      where: { managedById: contributorId, deletedAt: null },
+    });
+  }
+
+  findCollectedDatasets(contributorId: string) {
+    return this.prisma.client.dataset.findMany({
+      where: { collectedById: contributorId, deletedAt: null },
+    });
+  }
 }

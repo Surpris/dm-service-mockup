@@ -15,8 +15,10 @@ describe('DatasetResolver', () => {
     remove: jest.fn(),
   };
 
+  let module: TestingModule;
+
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         DatasetResolver,
         {
@@ -30,7 +32,8 @@ describe('DatasetResolver', () => {
     // service = module.get<DatasetService>(DatasetService);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await module.close();
     jest.clearAllMocks();
   });
 
@@ -40,7 +43,13 @@ describe('DatasetResolver', () => {
 
   describe('createDataset', () => {
     it('should call service.create with correct data', async () => {
-      const input: CreateDatasetInput = { name: 'New Dataset' };
+      const input: CreateDatasetInput = {
+        title: 'New Dataset',
+        datasetNo: 1,
+        accessPolicy: 'PUBLIC',
+        projectId: 'p1',
+        collectedById: 'c1',
+      };
       const expectedResult = { id: 'uuid', ...input };
       mockDatasetService.create.mockResolvedValue(expectedResult);
 
@@ -79,7 +88,7 @@ describe('DatasetResolver', () => {
   describe('updateDataset', () => {
     it('should call service.update with id and input', async () => {
       const id = 'uuid-1';
-      const input: UpdateDatasetInput = { id, name: 'Updated' };
+      const input: UpdateDatasetInput = { title: 'Updated' };
       const expectedResult = { id, name: 'Updated' };
       mockDatasetService.update.mockResolvedValue(expectedResult);
 

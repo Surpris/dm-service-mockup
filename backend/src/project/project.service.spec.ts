@@ -15,8 +15,10 @@ const mockPrismaClient = {
 describe('ProjectService', () => {
   let service: ProjectService;
 
+  let module: TestingModule;
+
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         ProjectService,
         {
@@ -31,7 +33,8 @@ describe('ProjectService', () => {
     service = module.get<ProjectService>(ProjectService);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await module.close();
     jest.clearAllMocks();
   });
 
@@ -42,8 +45,8 @@ describe('ProjectService', () => {
   describe('create', () => {
     it('should call prisma.project.create with correct data', async () => {
       const input: CreateProjectInput = {
-        name: 'Test Project',
-        description: 'Desc',
+        projectNumber: 'PRJ-001',
+        description: 'Test Project',
       };
       const expectedResult = { id: 'uuid', ...input };
       mockPrismaClient.project.create.mockResolvedValue(expectedResult);
@@ -98,7 +101,7 @@ describe('ProjectService', () => {
   describe('update', () => {
     it('should call prisma.project.update with correct params', async () => {
       const id = 'uuid-1';
-      const input: UpdateProjectInput = { id, name: 'Updated' };
+      const input: UpdateProjectInput = { projectNumber: 'PRJ-UPDATED' };
       const expectedResult = { id, name: 'Updated' };
       mockPrismaClient.project.update.mockResolvedValue(expectedResult);
 

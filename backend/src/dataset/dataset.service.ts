@@ -37,4 +37,12 @@ export class DatasetService {
       data: { deletedAt: new Date() },
     });
   }
+
+  findProject(id: string) {
+    return this.prisma.client.project.findUnique({ where: { id } });
+  }
+
+  findContributor(id: string) {
+    return this.prisma.client.contributor.findUnique({ where: { id } });
+  }
 }

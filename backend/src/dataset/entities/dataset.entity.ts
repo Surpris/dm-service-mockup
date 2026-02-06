@@ -1,5 +1,7 @@
 import { ObjectType, Field, ID, Int, registerEnumType } from '@nestjs/graphql';
 import { AccessPolicy } from '@prisma/client';
+import { Project } from '../../project/entities/project.entity';
+import { Contributor } from '../../contributor/entities/contributor.entity';
 
 registerEnumType(AccessPolicy, {
   name: 'AccessPolicy',
@@ -28,6 +30,15 @@ export class Dataset {
 
   @Field(() => String, { nullable: true })
   managedById?: string;
+
+  @Field(() => Project)
+  project: Project;
+
+  @Field(() => Contributor)
+  collectedBy: Contributor;
+
+  @Field(() => Contributor, { nullable: true })
+  managedBy?: Contributor;
 
   @Field(() => Date, { nullable: true })
   collectedAt?: Date;

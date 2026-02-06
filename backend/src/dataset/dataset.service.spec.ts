@@ -15,8 +15,10 @@ const mockPrismaClient = {
 describe('DatasetService', () => {
   let service: DatasetService;
 
+  let module: TestingModule;
+
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [
         DatasetService,
         {
@@ -31,7 +33,8 @@ describe('DatasetService', () => {
     service = module.get<DatasetService>(DatasetService);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await module.close();
     jest.clearAllMocks();
   });
 
@@ -41,7 +44,13 @@ describe('DatasetService', () => {
 
   describe('create', () => {
     it('should call prisma.dataset.create with correct data', async () => {
-      const input: CreateDatasetInput = { name: 'Test Dataset' };
+      const input: CreateDatasetInput = {
+        title: 'New Dataset',
+        datasetNo: 1,
+        accessPolicy: 'PUBLIC',
+        projectId: 'p1',
+        collectedById: 'c1',
+      };
       const expectedResult = { id: 'uuid', ...input };
       mockPrismaClient.dataset.create.mockResolvedValue(expectedResult);
 
@@ -95,7 +104,7 @@ describe('DatasetService', () => {
   describe('update', () => {
     it('should call prisma.dataset.update with correct params', async () => {
       const id = 'uuid-1';
-      const input: UpdateDatasetInput = { id, name: 'Updated' };
+      const input: UpdateDatasetInput = { title: 'Updated' };
       const expectedResult = { id, name: 'Updated' };
       mockPrismaClient.dataset.update.mockResolvedValue(expectedResult);
 

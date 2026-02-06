@@ -10,11 +10,15 @@ enum AccessPolicy {
 }
 
 type Contributor {
+  collectedDatasets: [Dataset!]
+
   """Contributor ID defined in plan"""
   contributorId: String!
   deletedAt: DateTime
   id: ID!
+  managedDatasets: [Dataset!]
   name: String!
+  projects: [ProjectContributor!]
 }
 
 input CreateContributorInput {
@@ -55,13 +59,16 @@ type DMPMetadata {
 type Dataset {
   accessPolicy: AccessPolicy!
   collectedAt: DateTime
+  collectedBy: Contributor!
   collectedById: String!
   datasetNo: Int!
   deletedAt: DateTime
   id: ID!
+  managedBy: Contributor
   managedById: String
   managedFrom: DateTime
   managedTo: DateTime
+  project: Project!
   projectId: String!
   title: String!
 }
@@ -87,7 +94,9 @@ type Mutation {
 }
 
 type Project {
+  contributors: [ProjectContributor!]
   createdAt: DateTime!
+  datasets: [Dataset!]
   deletedAt: DateTime
   description: String
   id: ID!
@@ -96,6 +105,24 @@ type Project {
   """Research Project Number"""
   projectNumber: String!
   updatedAt: DateTime!
+}
+
+type ProjectContributor {
+  contributor: Contributor
+  contributorId: String!
+  deletedAt: DateTime
+  id: ID!
+  project: Project
+  projectId: String!
+  role: ProjectRole!
+}
+
+"""Role of a contributor in a project"""
+enum ProjectRole {
+  CO_INVESTIGATOR
+  DATA_COLLECTOR
+  DATA_MANAGER
+  PRINCIPAL_INVESTIGATOR
 }
 
 type Query {
