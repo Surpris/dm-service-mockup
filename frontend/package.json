@@ -9,7 +9,7 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,tsx}\" --fix && tsc -b",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,html}\"",
     "preview": "vite preview",
-    "test": "vitest",
+    "test": "vitest run",
     "test:ui": "vitest --ui",
     "type-check": "tsc -b"
   },
