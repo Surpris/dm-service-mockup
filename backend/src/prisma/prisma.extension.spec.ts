@@ -2,8 +2,8 @@ import { PrismaClient } from '@prisma/client';
 import { createExtendedPrismaClient } from './prisma.extension';
 
 // Mock uuidv7 since we want to verify it's called, or at least check the format
-jest.mock('uuid', () => ({
-  v7: jest.fn().mockReturnValue('mock-uuid-v7'),
+jest.mock('uuidv7', () => ({
+  uuidv7: jest.fn().mockReturnValue('mock-uuid-v7'),
 }));
 
 // Define types for the extension config to satisfy linter
