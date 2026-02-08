@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ReactFlow, { Controls, Background, Panel } from 'reactflow';
 import type {
   Node,
@@ -24,12 +24,6 @@ interface GraphViewProps {
   onConnect: (connection: Connection) => void;
 }
 
-const nodeTypes = {
-  project: ProjectNode,
-  dataset: DatasetNode,
-  contributor: ContributorNode,
-};
-
 const GraphView: React.FC<GraphViewProps> = ({
   nodes,
   edges,
@@ -38,6 +32,22 @@ const GraphView: React.FC<GraphViewProps> = ({
   onLayout,
   onConnect,
 }) => {
+  /*
+  const onConnect = useCallback(
+    (params: Connection) =>
+      onEdgesChange((eds: Edge[]) => addEdge(params, eds)),
+    [onEdgesChange],
+  );
+  */
+
+  const nodeTypes = useMemo(
+    () => ({
+      project: ProjectNode,
+      dataset: DatasetNode,
+      contributor: ContributorNode,
+    }),
+    [],
+  );
 
   return (
     <div className="h-full w-full min-h-[500px] border border-gray-200 rounded-lg" style={{ height: '100%', width: '100%' }}>
