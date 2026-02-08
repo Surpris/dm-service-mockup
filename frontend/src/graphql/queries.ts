@@ -36,3 +36,24 @@ export const GET_CONTRIBUTORS = gql`
     }
   }
 `;
+
+export const GET_GRAPH = gql`
+  query GetGraph($filter: String) {
+    graph(filter: $filter) {
+      nodes {
+        id
+        label
+        type
+        data
+      }
+      edges {
+        id
+        source
+        target
+        type
+        label
+        data
+      }
+    }
+  }
+`;

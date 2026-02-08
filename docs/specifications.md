@@ -220,9 +220,11 @@ enum EntityType {
 
 - **Goal:** React Flow を用いてデータを可視化・操作できる。
 - **Tasks:**
-- [ ] [Frontend] React Flow の導入とカスタムノード（ProjectNode, DatasetNode）の作成。
-- [ ] [Frontend] 自動レイアウト機能の実装（dagre または elkjs を利用してノードの重なりを防ぐ）。
-- [ ] [Frontend] グラフ上のフィルタリング UI の実装。
+- [x] [Frontend] React Flow の導入とカスタムノード（ProjectNode, DatasetNode）の作成。
+- [x] [Frontend] 自動レイアウト機能の実装（dagre または elkjs を利用してノードの重なりを防ぐ）。
+- [x] [Frontend] グラフ上のフィルタリング UI の実装。
+- [ ] [Frontend] ユーザー定義リレーションシップ作成 UI の実装 (Phase 2 Extension)。
+- [ ] [Frontend] ノード詳細情報の表示拡充 (Modal/Drawer)。
 
 ### Phase 4: 統合テストとガバナンス機能 (1〜2週間)
 

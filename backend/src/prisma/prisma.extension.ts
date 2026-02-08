@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { v7 as uuidv7 } from 'uuid';
+import { uuidv7 } from 'uuidv7';
 
 export const softDeleteModels = [
   'Project',
