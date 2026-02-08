@@ -87,8 +87,8 @@ const GraphContainerContent = () => {
     );
 
   return (
-    <div className="h-[80vh] w-full bg-gray-50 flex">
-      <div className="flex-grow h-full">
+    <div className="h-[80vh] w-full bg-gray-50 flex" style={{ height: '80vh' }}>
+      <div className="flex-grow h-full" style={{ height: '100%' }}>
         <GraphView
           nodes={nodes}
           edges={edges}
