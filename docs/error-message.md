@@ -2,7 +2,19 @@
 
 ## From the devtool of browsr
 
-@xyflow_react.js?v=76a64356:3761 [React Flow]: The React Flow parent container needs a width and a height to render the graph. Help: <https://reactflow.dev/error#004>
+```plaintext
+GraphView.tsx:52 [React Flow]: The React Flow parent container needs a width and a height to render the graph. Help: https://reactflow.dev/error#004
+<ForwardRef(ReactFlow)>
+GraphView	@	GraphView.tsx:52
+<GraphView>
+GraphContainerContent	@	GraphContainer.tsx:105
+<GraphContainerContent>
+GraphContainer	@	GraphContainer.tsx:123
+<GraphContainer>
+GraphPage	@	GraphPage.tsx:20
+<GraphPage>
+App	@	App.tsx:38
+```
 
 ## details in the error#004
 
