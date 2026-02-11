@@ -1,9 +1,17 @@
 import { memo } from 'react';
-import { Handle, Position } from 'reactflow';
-import type { NodeProps } from 'reactflow';
+import { Handle, Position } from '@xyflow/react';
+import type { NodeProps, Node } from '@xyflow/react';
 import { User } from 'lucide-react';
 
-const ContributorNode = ({ data }: NodeProps) => {
+type ContributorNodeData = {
+  label: string;
+  targetPosition?: Position;
+  sourcePosition?: Position;
+};
+
+type ContributorNodeType = Node<ContributorNodeData, 'contributor'>;
+
+const ContributorNode = ({ data }: NodeProps<ContributorNodeType>) => {
   return (
     <div className="px-4 py-2 shadow-md rounded-md bg-white border-2 border-purple-500 min-w-[150px]">
       <div className="flex items-center">

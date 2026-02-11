@@ -1,9 +1,18 @@
 import { memo } from 'react';
-import { Handle, Position } from 'reactflow';
-import type { NodeProps } from 'reactflow';
+import { Handle, Position } from '@xyflow/react';
+import type { NodeProps, Node } from '@xyflow/react';
 import { Database } from 'lucide-react';
 
-const DatasetNode = ({ data }: NodeProps) => {
+type DatasetNodeData = {
+  label: string;
+  datasetNo?: number;
+  targetPosition?: Position;
+  sourcePosition?: Position;
+};
+
+type DatasetNodeType = Node<DatasetNodeData, 'dataset'>;
+
+const DatasetNode = ({ data }: NodeProps<DatasetNodeType>) => {
   return (
     <div className="px-4 py-2 shadow-md rounded-md bg-white border-2 border-green-500 min-w-[150px]">
       <div className="flex items-center">

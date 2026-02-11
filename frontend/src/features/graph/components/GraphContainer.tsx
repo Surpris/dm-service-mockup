@@ -4,8 +4,8 @@ import {
   useNodesState,
   useEdgesState,
   addEdge,
-} from 'reactflow';
-import type { Connection } from 'reactflow';
+} from '@xyflow/react';
+import type { Connection, Node, Edge } from '@xyflow/react';
 import GraphView from './GraphView';
 import GraphFilterSidebar from './GraphFilterSidebar';
 import { useGraphData } from '../hooks/useGraphData';
@@ -18,8 +18,8 @@ const GraphContainerContent = () => {
     loading,
     error,
   } = useGraphData();
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
   const [filters, setFilters] = useState({
     showProjects: true,
