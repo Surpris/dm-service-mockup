@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { Box, Typography, Avatar } from '@mui/material';
 import { Handle, Position } from '@xyflow/react';
 import type { NodeProps, Node } from '@xyflow/react';
 import { Database } from 'lucide-react';
@@ -14,29 +15,57 @@ type DatasetNodeType = Node<DatasetNodeData, 'dataset'>;
 
 const DatasetNode = ({ data }: NodeProps<DatasetNodeType>) => {
   return (
-    <div className="px-4 py-2 shadow-md rounded-md bg-white border-2 border-green-500 min-w-[150px]">
-      <div className="flex items-center">
-        <div className="rounded-full w-8 h-8 flex justify-center items-center bg-green-100">
-          <Database size={16} className="text-green-500" />
-        </div>
-        <div className="ml-2">
-          <div className="text-sm font-bold text-gray-700">{data.label}</div>
+    <Box
+      sx={{
+        px: 2,
+        py: 1,
+        boxShadow: 2,
+        borderRadius: 1,
+        bgcolor: 'background.paper',
+        border: '2px solid',
+        borderColor: 'success.main',
+        minWidth: '150px',
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Avatar
+          sx={{
+            width: 32,
+            height: 32,
+            bgcolor: 'green.50',
+            color: 'success.main',
+          }}
+        >
+          <Database size={16} />
+        </Avatar>
+        <Box sx={{ ml: 1 }}>
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 'bold', color: 'text.primary' }}
+          >
+            {data.label}
+          </Typography>
           {data.datasetNo !== undefined && (
-            <div className="text-xs text-gray-500">No. {data.datasetNo}</div>
+            <Typography
+              variant="caption"
+              sx={{ color: 'text.secondary', display: 'block' }}
+            >
+              No. {data.datasetNo}
+            </Typography>
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
       <Handle
         type="target"
         position={data.targetPosition || Position.Top}
-        className="w-3 h-3 bg-green-500"
+        style={{ width: 12, height: 12, background: '#2e7d32' }}
       />
       <Handle
         type="source"
         position={data.sourcePosition || Position.Bottom}
-        className="w-3 h-3 bg-green-500"
+        style={{ width: 12, height: 12, background: '#2e7d32' }}
       />
-    </div>
+    </Box>
   );
 };
 

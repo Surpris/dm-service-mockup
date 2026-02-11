@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useState, useMemo } from 'react';
+import { Box } from '@mui/material';
 import {
   ReactFlowProvider,
   useNodesState,
@@ -78,17 +79,29 @@ const GraphContainerContent = () => {
     [setEdges],
   );
 
-  if (loading) return <div className="p-4">Loading graph data...</div>;
+  if (loading)
+    return (
+      <Box sx={{ p: 4, height: '100%', width: '100%' }}>
+        Loading graph data...
+      </Box>
+    );
   if (error)
     return (
-      <div className="p-4 text-red-500">
+      <Box sx={{ p: 4, color: 'error.main', height: '100%', width: '100%' }}>
         Error loading graph: {error.message}
-      </div>
+      </Box>
     );
 
   return (
-    <div className="h-[80vh] w-full bg-gray-50 flex" style={{ height: '80vh' }}>
-      <div className="flex-grow h-full" style={{ height: '100%' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        bgcolor: 'grey.50',
+      }}
+    >
+      <Box sx={{ flexGrow: 1, height: '100%', position: 'relative' }}>
         <GraphView
           nodes={nodes}
           edges={edges}
@@ -97,17 +110,19 @@ const GraphContainerContent = () => {
           onLayout={onLayout}
           onConnect={onConnect}
         />
-      </div>
+      </Box>
       <GraphFilterSidebar filters={filters} onFilterChange={setFilters} />
-    </div>
+    </Box>
   );
 };
 
 const GraphContainer = () => {
   return (
-    <ReactFlowProvider>
-      <GraphContainerContent />
-    </ReactFlowProvider>
+    <Box sx={{ flexGrow: 1, height: '100%', width: '100%', minHeight: 0 }}>
+      <ReactFlowProvider>
+        <GraphContainerContent />
+      </ReactFlowProvider>
+    </Box>
   );
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box, Button, Stack } from '@mui/material';
 import { ReactFlow, Controls, Background, Panel } from '@xyflow/react';
 import type {
   Node,
@@ -37,7 +38,17 @@ const GraphView: React.FC<GraphViewProps> = ({
   onConnect,
 }) => {
   return (
-    <div className="h-full w-full min-h-[500px] border border-gray-200 rounded-lg" style={{ height: '100%', width: '100%' }}>
+    <Box
+      sx={{
+        height: '100%',
+        width: '100%',
+        minHeight: '500px',
+        border: '1px solid',
+        borderColor: 'divider',
+        borderRadius: 1,
+        overflow: 'hidden',
+      }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -50,23 +61,35 @@ const GraphView: React.FC<GraphViewProps> = ({
         <Controls />
         <Background />
         <Panel position="top-right">
-          <div className="flex gap-2">
-            <button
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="contained"
+              size="small"
               onClick={() => onLayout('TB')}
-              className="px-3 py-1 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 text-sm"
+              sx={{
+                bgcolor: 'white',
+                color: 'text.primary',
+                '&:hover': { bgcolor: 'grey.100' },
+              }}
             >
               Layout Vertical
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
               onClick={() => onLayout('LR')}
-              className="px-3 py-1 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 text-sm"
+              sx={{
+                bgcolor: 'white',
+                color: 'text.primary',
+                '&:hover': { bgcolor: 'grey.100' },
+              }}
             >
               Layout Horizontal
-            </button>
-          </div>
+            </Button>
+          </Stack>
         </Panel>
       </ReactFlow>
-    </div>
+    </Box>
   );
 };
 
