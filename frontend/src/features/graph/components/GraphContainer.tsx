@@ -102,7 +102,12 @@ const GraphContainerContent = () => {
       }}
     >
       <Box
-        sx={{ flexGrow: 1, height: '100%', width: '100%', position: 'relative' }}
+        sx={{
+          flexGrow: 1,
+          height: '100%',
+          width: '100%',
+          position: 'relative',
+        }}
       >
         <GraphView
           nodes={nodes}
