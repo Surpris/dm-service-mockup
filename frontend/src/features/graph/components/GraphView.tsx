@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Button, Stack } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material'; // 型定義を追加
 import { ReactFlow, Controls, Background, Panel } from '@xyflow/react';
 import type {
   Node,
@@ -27,6 +28,7 @@ interface GraphViewProps {
   onEdgesChange: OnEdgesChange;
   onLayout: (direction: string) => void;
   onConnect: (connection: Connection) => void;
+  sx?: SxProps<Theme>; // 追加: 親からスタイルを受け取る
 }
 
 const GraphView: React.FC<GraphViewProps> = ({
@@ -36,17 +38,20 @@ const GraphView: React.FC<GraphViewProps> = ({
   onEdgesChange,
   onLayout,
   onConnect,
+  sx, // 受け取る
 }) => {
   return (
     <Box
       sx={{
-        height: '100%',
+        // デフォルトスタイル: 親要素いっぱいに広げる
         width: '100%',
-        minHeight: '500px',
+        height: '100%',
         border: '1px solid',
         borderColor: 'divider',
         borderRadius: 1,
         overflow: 'hidden',
+        bgcolor: 'background.paper',
+        ...sx, // 親からのスタイルで上書き可能にする
       }}
     >
       <ReactFlow

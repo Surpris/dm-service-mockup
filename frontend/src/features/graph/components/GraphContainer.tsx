@@ -101,7 +101,9 @@ const GraphContainerContent = () => {
         bgcolor: 'grey.50',
       }}
     >
-      <Box sx={{ flexGrow: 1, height: '100%', position: 'relative' }}>
+      <Box
+        sx={{ flexGrow: 1, height: '100%', width: '100%', position: 'relative' }}
+      >
         <GraphView
           nodes={nodes}
           edges={edges}
@@ -109,6 +111,18 @@ const GraphContainerContent = () => {
           onEdgesChange={onEdgesChange}
           onLayout={onLayout}
           onConnect={onConnect}
+          // ここでサイズを制御します
+          sx={{
+            position: 'absolute', // 親の relative に対して絶対配置
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            width: 'auto', // absolute なので auto でOK（top/left等に従う）
+            height: 'auto', // 同上
+            border: 'none', // 必要に応じて枠線を消すなど調整
+            borderRadius: 0,
+          }}
         />
       </Box>
       <GraphFilterSidebar filters={filters} onFilterChange={setFilters} />

@@ -12,7 +12,8 @@ const GraphPage = () => {
         sx={{
           p: 2,
           flexGrow: 1,
-          height: '85vh',
+          height: '70vh',
+          width: '70vw',
           display: 'flex',
           flexDirection: 'column',
         }}
