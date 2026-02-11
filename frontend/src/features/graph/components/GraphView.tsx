@@ -1,19 +1,23 @@
-import React, { useMemo } from 'react';
-import ReactFlow, { Controls, Background, Panel } from 'reactflow';
+import React from 'react';
+import { ReactFlow, Controls, Background, Panel } from '@xyflow/react';
 import type {
   Node,
   Edge,
   Connection,
   OnNodesChange,
   OnEdgesChange,
-} from 'reactflow';
-import 'reactflow/dist/style.css';
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
 import ProjectNode from '../nodes/ProjectNode';
 import DatasetNode from '../nodes/DatasetNode';
 import ContributorNode from '../nodes/ContributorNode';
 
-
+const nodeTypes = {
+  project: ProjectNode,
+  dataset: DatasetNode,
+  contributor: ContributorNode,
+};
 
 interface GraphViewProps {
   nodes: Node[];
@@ -32,23 +36,6 @@ const GraphView: React.FC<GraphViewProps> = ({
   onLayout,
   onConnect,
 }) => {
-  /*
-  const onConnect = useCallback(
-    (params: Connection) =>
-      onEdgesChange((eds: Edge[]) => addEdge(params, eds)),
-    [onEdgesChange],
-  );
-  */
-
-  const nodeTypes = useMemo(
-    () => ({
-      project: ProjectNode,
-      dataset: DatasetNode,
-      contributor: ContributorNode,
-    }),
-    [],
-  );
-
   return (
     <div className="h-full w-full min-h-[500px] border border-gray-200 rounded-lg" style={{ height: '100%', width: '100%' }}>
       <ReactFlow

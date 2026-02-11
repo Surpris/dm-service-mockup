@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { GET_GRAPH } from '../../../graphql/queries';
 import { mapGraphDataToReactFlow } from '../utils/mapper';
 import type { BackendGraphData } from '../utils/mapper';
-import type { Node, Edge } from 'reactflow';
+import type { Node, Edge } from '@xyflow/react';
 
 interface UseGraphDataResult {
   nodes: Node[];

@@ -1,4 +1,4 @@
-import type { Node, Edge } from 'reactflow';
+import type { Node, Edge } from '@xyflow/react';
 
 // Define types locally since we don't have generated types yet
 export interface BackendGraphNode {

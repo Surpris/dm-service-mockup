@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getLayoutedElements } from './layout';
-import type { Node, Edge } from 'reactflow';
+import type { Node, Edge } from '@xyflow/react';
 
 describe('getLayoutedElements', () => {
   it('should assign positions to nodes based on dagre layout', () => {

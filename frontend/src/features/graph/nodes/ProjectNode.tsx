@@ -1,9 +1,18 @@
 import { memo } from 'react';
-import { Handle, Position } from 'reactflow';
-import type { NodeProps } from 'reactflow';
+import { Handle, Position } from '@xyflow/react';
+import type { NodeProps, Node } from '@xyflow/react';
 import { Folder } from 'lucide-react';
 
-const ProjectNode = ({ data }: NodeProps) => {
+type ProjectNodeData = {
+  label: string;
+  projectNumber?: string;
+  targetPosition?: Position;
+  sourcePosition?: Position;
+};
+
+type ProjectNodeType = Node<ProjectNodeData, 'project'>;
+
+const ProjectNode = ({ data }: NodeProps<ProjectNodeType>) => {
   return (
     <div className="px-4 py-2 shadow-md rounded-md bg-white border-2 border-blue-500 min-w-[150px]">
       <div className="flex items-center">
