@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { Box, Typography, Avatar } from '@mui/material';
 import { Handle, Position } from '@xyflow/react';
 import type { NodeProps, Node } from '@xyflow/react';
 import { User } from 'lucide-react';
@@ -13,26 +14,49 @@ type ContributorNodeType = Node<ContributorNodeData, 'contributor'>;
 
 const ContributorNode = ({ data }: NodeProps<ContributorNodeType>) => {
   return (
-    <div className="px-4 py-2 shadow-md rounded-md bg-white border-2 border-purple-500 min-w-[150px]">
-      <div className="flex items-center">
-        <div className="rounded-full w-8 h-8 flex justify-center items-center bg-purple-100">
-          <User size={16} className="text-purple-500" />
-        </div>
-        <div className="ml-2">
-          <div className="text-sm font-bold text-gray-700">{data.label}</div>
-        </div>
-      </div>
+    <Box
+      sx={{
+        px: 2,
+        py: 1,
+        boxShadow: 2,
+        borderRadius: 1,
+        bgcolor: 'background.paper',
+        border: '2px solid',
+        borderColor: 'secondary.main',
+        minWidth: '150px',
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Avatar
+          sx={{
+            width: 32,
+            height: 32,
+            bgcolor: 'purple.50',
+            color: 'secondary.main',
+          }}
+        >
+          <User size={16} />
+        </Avatar>
+        <Box sx={{ ml: 1 }}>
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 'bold', color: 'text.primary' }}
+          >
+            {data.label}
+          </Typography>
+        </Box>
+      </Box>
       <Handle
         type="target"
         position={data.targetPosition || Position.Top}
-        className="w-3 h-3 bg-purple-500"
+        style={{ width: 12, height: 12, background: '#9c27b0' }}
       />
       <Handle
         type="source"
         position={data.sourcePosition || Position.Bottom}
-        className="w-3 h-3 bg-purple-500"
+        style={{ width: 12, height: 12, background: '#9c27b0' }}
       />
-    </div>
+    </Box>
   );
 };
 
