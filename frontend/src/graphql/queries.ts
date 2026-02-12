@@ -52,8 +52,21 @@ export const GET_GRAPH = gql`
         target
         type
         label
-        data
       }
+    }
+  }
+`;
+
+export const CREATE_USER_DEFINED_RELATIONSHIP = gql`
+  mutation CreateUserDefinedRelationship(
+    $input: CreateUserDefinedRelationshipInput!
+  ) {
+    createUserDefinedRelationship(input: $input) {
+      id
+      relationshipType
+      sourceId
+      targetId
+      properties
     }
   }
 `;

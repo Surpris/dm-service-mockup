@@ -1,16 +1,15 @@
 import { useEffect, useCallback, useState, useMemo } from 'react';
 import { Box } from '@mui/material';
-import {
-  ReactFlowProvider,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-} from '@xyflow/react';
+import { ReactFlowProvider, useNodesState, useEdgesState } from '@xyflow/react';
 import type { Connection, Node, Edge } from '@xyflow/react';
+import { useMutation } from '@apollo/client/react';
 import GraphView from './GraphView';
 import GraphFilterSidebar from './GraphFilterSidebar';
+import CreateRelationshipDialog from './CreateRelationshipDialog';
+import NodeDetailsDrawer from './NodeDetailsDrawer';
 import { useGraphData } from '../hooks/useGraphData';
 import { getLayoutedElements } from '../utils/layout';
+import { CREATE_USER_DEFINED_RELATIONSHIP } from '../../../graphql/queries';
 
 const GraphContainerContent = () => {
   const {
@@ -18,9 +17,24 @@ const GraphContainerContent = () => {
     edges: initialEdges,
     loading,
     error,
+    refetch,
   } = useGraphData();
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+
+  // Dialog State
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [pendingConnection, setPendingConnection] = useState<Connection | null>(
+    null,
+  );
+
+  // Drawer State
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+
+  const [createUserDefinedRelationship] = useMutation(
+    CREATE_USER_DEFINED_RELATIONSHIP,
+  );
 
   const [filters, setFilters] = useState({
     showProjects: true,
@@ -74,10 +88,73 @@ const GraphContainerContent = () => {
     [nodes, edges, setNodes, setEdges],
   );
 
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges],
-  );
+  const onConnect = useCallback((params: Connection) => {
+    if (params.source && params.target) {
+      setPendingConnection(params);
+      setCreateDialogOpen(true);
+    }
+  }, []);
+
+  const onNodeClick = useCallback((_event: React.MouseEvent, node: Node) => {
+    setSelectedNode(node);
+    setDrawerOpen(true);
+  }, []);
+
+  const handleCreateRelationship = async ({
+    relationshipType,
+    description,
+  }: {
+    relationshipType: string;
+    description: string;
+  }) => {
+    if (
+      !pendingConnection ||
+      !pendingConnection.source ||
+      !pendingConnection.target
+    )
+      return;
+
+    const sourceNode = nodes.find((n) => n.id === pendingConnection.source);
+    const targetNode = nodes.find((n) => n.id === pendingConnection.target);
+
+    if (!sourceNode || !targetNode) return;
+
+    // Map lowercase types to uppercase Enum
+    const getEntityType = (type: string | undefined) =>
+      type?.toUpperCase() || 'PROJECT';
+
+    try {
+      await createUserDefinedRelationship({
+        variables: {
+          input: {
+            relationshipType,
+            sourceId: sourceNode.id,
+            sourceType: getEntityType(sourceNode.type),
+            targetId: targetNode.id,
+            targetType: getEntityType(targetNode.type),
+            properties: JSON.stringify({ description }),
+            createdBy: 'user', // Mock user ID
+          },
+        },
+      });
+
+      // Refresh graph data
+      await refetch();
+    } catch (e) {
+      console.error('Failed to create relationship', e);
+      alert('Failed to create relationship. Check console for details.');
+    }
+  };
+
+  const getPendingSourceNode = () => {
+    if (!pendingConnection) return null;
+    return nodes.find((n) => n.id === pendingConnection.source) || null;
+  };
+
+  const getPendingTargetNode = () => {
+    if (!pendingConnection) return null;
+    return nodes.find((n) => n.id === pendingConnection.target) || null;
+  };
 
   if (loading)
     return (
@@ -116,6 +193,7 @@ const GraphContainerContent = () => {
           onEdgesChange={onEdgesChange}
           onLayout={onLayout}
           onConnect={onConnect}
+          onNodeClick={onNodeClick}
           // ここでサイズを制御します
           sx={{
             position: 'absolute', // 親の relative に対して絶対配置
@@ -128,6 +206,18 @@ const GraphContainerContent = () => {
             border: 'none', // 必要に応じて枠線を消すなど調整
             borderRadius: 0,
           }}
+        />
+        <CreateRelationshipDialog
+          open={createDialogOpen}
+          onClose={() => setCreateDialogOpen(false)}
+          onSubmit={handleCreateRelationship}
+          sourceNode={getPendingSourceNode()}
+          targetNode={getPendingTargetNode()}
+        />
+        <NodeDetailsDrawer
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          node={selectedNode}
         />
       </Box>
       <GraphFilterSidebar filters={filters} onFilterChange={setFilters} />
