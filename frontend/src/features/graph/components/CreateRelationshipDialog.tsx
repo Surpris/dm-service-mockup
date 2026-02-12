@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -29,13 +29,10 @@ const CreateRelationshipDialog: React.FC<CreateRelationshipDialogProps> = ({
   const [relationshipType, setRelationshipType] = useState('');
   const [description, setDescription] = useState('');
 
-  // Reset form when dialog opens
-  useEffect(() => {
-    if (open) {
-      setRelationshipType('');
-      setDescription('');
-    }
-  }, [open]);
+  const handleEnter = () => {
+    setRelationshipType('');
+    setDescription('');
+  };
 
   const handleSubmit = () => {
     onSubmit({ relationshipType, description });
@@ -45,7 +42,13 @@ const CreateRelationshipDialog: React.FC<CreateRelationshipDialogProps> = ({
   if (!sourceNode || !targetNode) return null;
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      TransitionProps={{ onEnter: handleEnter }}
+      maxWidth="sm"
+      fullWidth
+    >
       <DialogTitle>Create User Defined Relationship</DialogTitle>
       <DialogContent>
         <Box sx={{ mb: 2, mt: 1 }}>
