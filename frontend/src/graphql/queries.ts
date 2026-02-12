@@ -52,6 +52,7 @@ export const GET_GRAPH = gql`
         target
         type
         label
+      }
     }
   }
 `;
