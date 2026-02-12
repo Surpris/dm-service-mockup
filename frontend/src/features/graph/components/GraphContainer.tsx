@@ -2,7 +2,7 @@ import { useEffect, useCallback, useState, useMemo } from 'react';
 import { Box } from '@mui/material';
 import { ReactFlowProvider, useNodesState, useEdgesState } from '@xyflow/react';
 import type { Connection, Node, Edge } from '@xyflow/react';
-import { useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 import GraphView from './GraphView';
 import GraphFilterSidebar from './GraphFilterSidebar';
 import CreateRelationshipDialog from './CreateRelationshipDialog';
