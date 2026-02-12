@@ -28,6 +28,7 @@ interface GraphViewProps {
   onEdgesChange: OnEdgesChange;
   onLayout: (direction: string) => void;
   onConnect: (connection: Connection) => void;
+  onNodeClick?: (event: React.MouseEvent, node: Node) => void; // 追加
   sx?: SxProps<Theme>; // 追加: 親からスタイルを受け取る
 }
 
@@ -38,6 +39,7 @@ const GraphView: React.FC<GraphViewProps> = ({
   onEdgesChange,
   onLayout,
   onConnect,
+  onNodeClick, // 受け取る
   sx, // 受け取る
 }) => {
   return (
@@ -60,6 +62,7 @@ const GraphView: React.FC<GraphViewProps> = ({
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onNodeClick={onNodeClick} // 渡す
         nodeTypes={nodeTypes}
         fitView
       >
