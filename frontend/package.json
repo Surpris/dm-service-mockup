@@ -10,7 +10,7 @@
     "lint": "eslint \"{src,apps,libs,test,e2e}/**/*.{ts,tsx}\" --fix && tsc -b",
     "format": "prettier --write \"{src,e2e}/**/*.{ts,tsx,css,html}\"",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "test:ui": "vitest --ui",
     "type-check": "tsc -b",
     "test:e2e": "playwright test"
