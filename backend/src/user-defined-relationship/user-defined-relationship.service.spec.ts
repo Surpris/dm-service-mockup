@@ -117,18 +117,19 @@ describe('UserDefinedRelationshipService', () => {
   describe('update', () => {
     it('should update a relationship', async () => {
       const id = 'uuid-1';
-      const input = { relationshipType: 'UPDATED' };
-      const expectedResult = { id, ...input };
+      const input = { id, relationshipType: 'UPDATED' };
+      const expectedResult = { id, relationshipType: 'UPDATED' };
       (
         prisma.client.userDefinedRelationship.update as jest.Mock
       ).mockResolvedValue(expectedResult);
 
       const result = await service.update(id, input);
       expect(result).toEqual(expectedResult);
+      const { id: _unused, ...data } = input;
       expect(prisma.client.userDefinedRelationship.update).toHaveBeenCalledWith(
         {
           where: { id },
-          data: input,
+          data,
         },
       );
     });
@@ -139,7 +140,7 @@ describe('UserDefinedRelationshipService', () => {
         prisma.client.userDefinedRelationship.update as jest.Mock
       ).mockRejectedValue(new Error('Not found'));
 
-      await expect(service.update(id, {})).rejects.toThrow('Not found');
+      await expect(service.update(id, { id })).rejects.toThrow('Not found');
     });
   });
 

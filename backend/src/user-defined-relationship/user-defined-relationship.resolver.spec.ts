@@ -51,6 +51,7 @@ describe('UserDefinedRelationshipResolver', () => {
         targetId: 'tgt-1',
         targetType: 'DATASET',
         relationshipType: 'RELATED_TO',
+        createdBy: 'user-1',
       };
       const expectedResult = { id: 'ur-1', ...input };
       mockService.create.mockResolvedValue(expectedResult);
