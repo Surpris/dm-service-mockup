@@ -1,0 +1,79 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:postgrespw@localhost:5432/dm_service_db
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgrespw
+          POSTGRES_DB: dm_service_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    
+    - name: Install backend dependencies
+      run: npm ci
+      working-directory: backend
+
+    - name: Setup Database
+      run: |
+        npx prisma migrate deploy
+        npx prisma db seed
+      working-directory: backend
+
+
+    - name: Build Backend
+      run: npm run build
+      working-directory: backend
+
+    - name: Start Backend
+      run: npm run start &
+      working-directory: backend
+      env:
+        PORT: 3000
+
+    - name: Wait for Backend
+      run: |
+        echo "Waiting for backend to start..."
+        timeout 60s bash -c 'until curl -s http://localhost:3000/graphql > /dev/null; do echo "Still waiting..."; sleep 2; done'
+        echo "Backend is up!"
+      shell: bash
+
+    - name: Install frontend dependencies
+      run: npm ci
+      working-directory: frontend
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+      working-directory: frontend
+
+    - name: Run Playwright tests
+      run: npx playwright test
+      working-directory: frontend
+
+
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: frontend/playwright-report/
+        retention-days: 30
