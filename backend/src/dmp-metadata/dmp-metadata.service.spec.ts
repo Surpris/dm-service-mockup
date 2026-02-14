@@ -48,14 +48,21 @@ describe('DMPMetadataService', () => {
       const input: CreateDMPMetadataInput = {
         projectId: 'proj-1',
       };
-      const expectedResult = { id: 'dmp-1', ...input, createdDate: new Date(), lastUpdatedDate: new Date() };
+      const expectedResult = {
+        id: 'dmp-1',
+        ...input,
+        createdDate: new Date(),
+        lastUpdatedDate: new Date(),
+      };
       mockPrismaClient.dMPMetadata.create.mockResolvedValue(expectedResult);
 
       const result = await service.create(input);
 
       expect(mockPrismaClient.dMPMetadata.create).toHaveBeenCalledWith({
         data: {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           createdDate: expect.any(Date),
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           lastUpdatedDate: expect.any(Date),
           project: {
             connect: { id: input.projectId },
@@ -122,12 +129,12 @@ describe('DMPMetadataService', () => {
 
       const result = await service.update(id, input);
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id: _, ...data } = input;
       expect(mockPrismaClient.dMPMetadata.update).toHaveBeenCalledWith({
         where: { id },
         data: {
           ...data,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           lastUpdatedDate: expect.any(Date),
         },
         include: { project: true },

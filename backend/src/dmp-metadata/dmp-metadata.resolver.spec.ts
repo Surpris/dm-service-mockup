@@ -86,20 +86,28 @@ describe('DMPMetadataResolver', () => {
 
       const result = await resolver.findByProject(projectId);
 
-      expect(mockDMPMetadataService.findByProjectId).toHaveBeenCalledWith(projectId);
+      expect(mockDMPMetadataService.findByProjectId).toHaveBeenCalledWith(
+        projectId,
+      );
       expect(result).toBe(expectedResult);
     });
   });
 
   describe('updateDMPMetadata', () => {
     it('should call service.update', async () => {
-      const input: UpdateDMPMetadataInput = { id: 'dmp-1', status: 'PUBLISHED' };
+      const input: UpdateDMPMetadataInput = {
+        id: 'dmp-1',
+        status: 'PUBLISHED',
+      };
       const expectedResult = { id: 'dmp-1', status: 'PUBLISHED' };
       mockDMPMetadataService.update.mockResolvedValue(expectedResult);
 
       const result = await resolver.updateDMPMetadata(input);
 
-      expect(mockDMPMetadataService.update).toHaveBeenCalledWith(input.id, input);
+      expect(mockDMPMetadataService.update).toHaveBeenCalledWith(
+        input.id,
+        input,
+      );
       expect(result).toBe(expectedResult);
     });
   });

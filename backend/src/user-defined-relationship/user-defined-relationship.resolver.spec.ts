@@ -93,7 +93,10 @@ describe('UserDefinedRelationshipResolver', () => {
         id: 'ur-1',
         relationshipType: 'UPDATED_RELATION',
       };
-      const expectedResult = { id: 'ur-1', relationshipType: 'UPDATED_RELATION' };
+      const expectedResult = {
+        id: 'ur-1',
+        relationshipType: 'UPDATED_RELATION',
+      };
       mockService.update.mockResolvedValue(expectedResult);
 
       const result = await resolver.updateUserDefinedRelationship(input);
