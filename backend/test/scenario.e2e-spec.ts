@@ -1,11 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
+import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
 import { PrismaClient } from '@prisma/client';
 
+interface GqlRes<T> {
+  data: T;
+}
+
 describe('Scenario Test (e2e)', () => {
-  let app: INestApplication;
+  let app: INestApplication<App>;
   let prisma: PrismaClient;
 
   beforeAll(async () => {
@@ -53,7 +58,11 @@ describe('Scenario Test (e2e)', () => {
       .send({ query: createProjectQuery })
       .expect(200);
 
-    const projectData = projectRes.body.data.createProject;
+    const projectData = (
+      projectRes.body as GqlRes<{
+        createProject: { id: string; projectNumber: string };
+      }>
+    ).data.createProject;
     projectId = projectData.id;
     expect(projectData.projectNumber).toBe(projectNumber);
 
@@ -74,7 +83,11 @@ describe('Scenario Test (e2e)', () => {
       .send({ query: createContributorQuery })
       .expect(200);
 
-    const contributorData = contributorRes.body.data.createContributor;
+    const contributorData = (
+      contributorRes.body as GqlRes<{
+        createContributor: { id: string; contributorId: string };
+      }>
+    ).data.createContributor;
     contributorId = contributorData.id;
     expect(contributorData.contributorId).toBe(contributorIdRef);
 
@@ -98,7 +111,11 @@ describe('Scenario Test (e2e)', () => {
       .send({ query: createDatasetQuery })
       .expect(200);
 
-    const datasetData = datasetRes.body.data.createDataset;
+    const datasetData = (
+      datasetRes.body as GqlRes<{
+        createDataset: { id: string; title: string };
+      }>
+    ).data.createDataset;
     datasetId = datasetData.id;
     expect(datasetData.title).toBe(datasetTitle);
   });
@@ -126,7 +143,11 @@ describe('Scenario Test (e2e)', () => {
       .send({ query: createRelationshipQuery })
       .expect(200);
 
-    const data = res.body.data.createUserDefinedRelationship;
+    const data = (
+      res.body as GqlRes<{
+        createUserDefinedRelationship: { id: string; relationshipType: string };
+      }>
+    ).data.createUserDefinedRelationship;
     relationshipId = data.id;
     expect(data.relationshipType).toBe('MaintainedBy');
   });
@@ -156,7 +177,19 @@ describe('Scenario Test (e2e)', () => {
       .send({ query: graphQuery })
       .expect(200);
 
-    const graph = res.body.data.graph;
+    const graph = (
+      res.body as GqlRes<{
+        graph: {
+          nodes: Array<{ id: string; type: string }>;
+          edges: Array<{
+            id: string;
+            source: string;
+            target: string;
+            type: string;
+          }>;
+        };
+      }>
+    ).data.graph;
 
     // Verify Nodes exist
     const projectNode = graph.nodes.find((n) => n.id === projectId);
@@ -164,11 +197,11 @@ describe('Scenario Test (e2e)', () => {
     const datasetNode = graph.nodes.find((n) => n.id === datasetId);
 
     expect(projectNode).toBeDefined();
-    expect(projectNode.type).toBe('PROJECT');
+    expect(projectNode?.type).toBe('PROJECT');
     expect(contributorNode).toBeDefined();
-    expect(contributorNode.type).toBe('CONTRIBUTOR');
+    expect(contributorNode?.type).toBe('CONTRIBUTOR');
     expect(datasetNode).toBeDefined();
-    expect(datasetNode.type).toBe('DATASET');
+    expect(datasetNode?.type).toBe('DATASET');
 
     // Verify Edges exist
     // 1. Built-in: Dataset -> Project (BELONGS_TO or similar, implicit in schema logic, explicit in graph service)
@@ -178,9 +211,9 @@ describe('Scenario Test (e2e)', () => {
     // 2. User Defined: Project -> Contributor (MaintainedBy)
     const userEdge = graph.edges.find((e) => e.id === relationshipId);
     expect(userEdge).toBeDefined();
-    expect(userEdge.source).toBe(projectId);
-    expect(userEdge.target).toBe(contributorId);
-    expect(userEdge.type).toBe('MaintainedBy'); // Or "USER_DEFINED" depending on implementation detail, checking label or type
+    expect(userEdge?.source).toBe(projectId);
+    expect(userEdge?.target).toBe(contributorId);
+    expect(userEdge?.type).toBe('MaintainedBy'); // Or "USER_DEFINED" depending on implementation detail, checking label or type
   });
 
   it('4. Cleanup (Delete Resources)', async () => {
@@ -236,7 +269,14 @@ describe('Scenario Test (e2e)', () => {
       .send({ query: graphQuery })
       .expect(200);
 
-    const graph = res.body.data.graph;
+    const graph = (
+      res.body as GqlRes<{
+        graph: {
+          nodes: Array<{ id: string }>;
+          edges: Array<{ id: string }>;
+        };
+      }>
+    ).data.graph;
 
     // Nodes should be gone (or not returned if soft deleted and filtered out)
     const projectNode = graph.nodes.find((n) => n.id === projectId);
