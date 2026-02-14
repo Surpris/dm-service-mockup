@@ -39,7 +39,7 @@ export default function DatasetList() {
     );
 
   return (
-    <Box sx={{ height: 600, width: '100%' }}>
+    <Box sx={{ height: 600, width: '100%' }} data-testid="dataset-list-page">
       <Typography variant="h4" component="h1" gutterBottom>
         Datasets
       </Typography>

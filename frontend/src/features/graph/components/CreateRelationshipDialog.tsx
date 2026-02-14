@@ -71,7 +71,13 @@ const CreateRelationshipDialog: React.FC<CreateRelationshipDialogProps> = ({
   const isCustom = relationshipType === CUSTOM_OPTION;
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      data-testid="create-relationship-dialog"
+    >
       <DialogTitle>Create Relationship</DialogTitle>
       <DialogContent>
         <Box sx={{ mb: 2, mt: 1 }}>
@@ -88,6 +94,7 @@ const CreateRelationshipDialog: React.FC<CreateRelationshipDialogProps> = ({
           <FormControl fullWidth margin="dense">
             <InputLabel>Relationship Type</InputLabel>
             <Select
+              data-testid="relationship-type-select"
               value={relationshipType}
               label="Relationship Type"
               onChange={(e) => setRelationshipType(e.target.value)}
@@ -104,6 +111,7 @@ const CreateRelationshipDialog: React.FC<CreateRelationshipDialogProps> = ({
 
         {(isCustom || availableOptions.length === 0) && (
           <TextField
+            data-testid="custom-relationship-type-input"
             autoFocus={availableOptions.length === 0}
             margin="dense"
             label="Custom Relationship Type"
@@ -117,6 +125,7 @@ const CreateRelationshipDialog: React.FC<CreateRelationshipDialogProps> = ({
         )}
 
         <TextField
+          data-testid="relationship-description-input"
           margin="dense"
           label="Description"
           fullWidth
@@ -128,8 +137,14 @@ const CreateRelationshipDialog: React.FC<CreateRelationshipDialogProps> = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
         <Button
+          data-testid="relationship-dialog-cancel-button"
+          onClick={onClose}
+        >
+          Cancel
+        </Button>
+        <Button
+          data-testid="relationship-dialog-submit-button"
           onClick={handleSubmit}
           variant="contained"
           disabled={relationshipType === CUSTOM_OPTION && !customType}

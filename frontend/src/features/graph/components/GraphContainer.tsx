@@ -171,6 +171,7 @@ const GraphContainerContent = () => {
 
   return (
     <Box
+      data-testid="graph-container"
       sx={{
         display: 'flex',
         width: '100%',

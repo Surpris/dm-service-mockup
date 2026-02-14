@@ -64,6 +64,7 @@ export default function MainLayout() {
             {menuItems.map((item) => (
               <ListItem key={item.text} disablePadding>
                 <ListItemButton
+                  data-testid={`nav-link-${item.text.toLowerCase().replace(/\s+/g, '-')}`}
                   selected={location.pathname === item.path}
                   onClick={() => navigate(item.path)}
                 >

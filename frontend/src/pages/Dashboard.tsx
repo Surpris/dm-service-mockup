@@ -2,7 +2,7 @@ import { Box, Typography, Paper, Grid } from '@mui/material';
 
 export default function Dashboard() {
   return (
-    <Box>
+    <Box data-testid="page-dashboard">
       <Typography variant="h4" gutterBottom>
         Dashboard
       </Typography>

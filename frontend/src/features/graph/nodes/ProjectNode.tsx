@@ -13,9 +13,10 @@ type ProjectNodeData = {
 
 type ProjectNodeType = Node<ProjectNodeData, 'project'>;
 
-const ProjectNode = ({ data }: NodeProps<ProjectNodeType>) => {
+const ProjectNode = ({ id, data }: NodeProps<ProjectNodeType>) => {
   return (
     <Box
+      data-testid={`node-project-${id}`}
       sx={{
         px: 2,
         py: 1,
@@ -59,11 +60,13 @@ const ProjectNode = ({ data }: NodeProps<ProjectNodeType>) => {
         type="target"
         position={data.targetPosition || Position.Top}
         style={{ width: 12, height: 12, background: '#1976d2' }}
+        data-testid={`handle-target-${id}`}
       />
       <Handle
         type="source"
         position={data.sourcePosition || Position.Bottom}
         style={{ width: 12, height: 12, background: '#1976d2' }}
+        data-testid={`handle-source-${id}`}
       />
     </Box>
   );

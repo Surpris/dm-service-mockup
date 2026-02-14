@@ -7,12 +7,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,tsx}\" --fix && tsc -b",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,html}\"",
+    "lint": "eslint \"{src,apps,libs,test,e2e}/**/*.{ts,tsx}\" --fix && tsc -b",
+    "format": "prettier --write \"{src,e2e}/**/*.{ts,tsx,css,html}\"",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "test:ui": "vitest --ui",
-    "type-check": "tsc -b"
+    "type-check": "tsc -b",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@apollo/client": "4.1.4",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.1",
+    "@playwright/test": "^1.58.2",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "14.6.1",

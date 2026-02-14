@@ -33,8 +33,8 @@ export class GraphService {
       nodes.push({
         id: p.id,
         type: NodeType.PROJECT,
-        label: p.projectNumber,
-        data: JSON.stringify({ description: p.description }),
+        label: p.description || p.projectNumber,
+        data: JSON.stringify({ projectNumber: p.projectNumber }),
       });
     });
 

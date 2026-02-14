@@ -44,6 +44,7 @@ const GraphFilterSidebar: React.FC<GraphFilterSidebarProps> = ({
         <FormControlLabel
           control={
             <Checkbox
+              data-testid="filter-checkbox-projects"
               checked={filters.showProjects}
               onChange={handleChange}
               name="showProjects"
@@ -54,6 +55,7 @@ const GraphFilterSidebar: React.FC<GraphFilterSidebarProps> = ({
         <FormControlLabel
           control={
             <Checkbox
+              data-testid="filter-checkbox-datasets"
               checked={filters.showDatasets}
               onChange={handleChange}
               name="showDatasets"
@@ -64,6 +66,7 @@ const GraphFilterSidebar: React.FC<GraphFilterSidebarProps> = ({
         <FormControlLabel
           control={
             <Checkbox
+              data-testid="filter-checkbox-contributors"
               checked={filters.showContributors}
               onChange={handleChange}
               name="showContributors"

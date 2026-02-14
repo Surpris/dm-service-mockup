@@ -44,6 +44,9 @@ const NodeDetailsDrawer: React.FC<NodeDetailsDrawerProps> = ({
       open={open}
       onClose={onClose}
       variant="temporary"
+      PaperProps={{
+        'data-testid': 'node-details-drawer',
+      }}
       sx={{
         '& .MuiDrawer-paper': { width: 350, boxSizing: 'border-box' },
       }}
@@ -57,13 +60,17 @@ const NodeDetailsDrawer: React.FC<NodeDetailsDrawerProps> = ({
         }}
       >
         <Typography variant="h6">Node Details</Typography>
-        <IconButton onClick={onClose}>
+        <IconButton data-testid="node-details-close-button" onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </Box>
       <Divider />
       <Box sx={{ p: 2 }}>
-        <Typography variant="subtitle1" gutterBottom>
+        <Typography
+          data-testid="node-details-title"
+          variant="subtitle1"
+          gutterBottom
+        >
           {node.data.label as string}
         </Typography>
         <Chip
