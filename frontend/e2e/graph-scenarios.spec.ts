@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { GraphPage } from './pages/graph-page';
 
 test.describe('Knowledge Graph Scenarios', () => {
