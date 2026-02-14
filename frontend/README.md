@@ -1,73 +1,49 @@
-# React + TypeScript + Vite
+# RDM Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+研究データマネジメント（RDM）システムのフロントエンドアプリケーションです。
+React Flow を活用したインタラクティブなナレッジグラフ可視化を提供します。
 
-Currently, two official plugins are available:
+## 🛠️ 技術スタック
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework**: React + TypeScript + Vite
+- **UI Component**: Material-UI (MUI)
+- **Visualization**: React Flow (@xyflow/react)
+- **API Client**: GraphQL Code Generator + Apollo Client
+- **Testing**: Playwright (E2E)
 
-## React Compiler
+## 🚀 機能
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **プロジェクト一覧**: MUI DataGrid を使用したページネーション・ソート・フィルタリング対応のテーブルビュー。
+- **ナレッジグラフ**:
+  - プロジェクト、データセット、貢献者の関係性を可視化。
+  - **自動レイアウト**: dagre/elkjs を用いたノードの自動配置。
+  - **リレーション作成**: ノード間のハンドルをドラッグ＆ドロップして、独自の「ユーザー定義リレーション」を作成可能。
+  - **フィルタリング**: 表示するノードタイプや属性を動的に切り替え。
 
-## Expanding the ESLint configuration
+## 🏃 開発環境の起動
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+前提: バックエンドが `http://localhost:3000` で起動していること。
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# 依存関係のインストール
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 開発サーバー起動
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+`http://localhost:5173` にアクセスしてください。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🧪 テストの実行
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Playwright による E2E テストを実行します。
+
+```bash
+# E2Eテストの実行 (Headless)
+npx playwright test
+
+# UIモードでの実行
+npx playwright test --ui
 ```
+
+詳細は `e2e/README.md` (もしあれば) または `package.json` を参照してください。
