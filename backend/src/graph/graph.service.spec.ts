@@ -86,20 +86,20 @@ describe('GraphService', () => {
       expect(result.nodes).toContainEqual({
         id: 'proj-1',
         type: NodeType.PROJECT,
-        label: 'P1',
-        data: JSON.stringify({ description: 'Project 1' }),
+        label: 'Project 1',
+        data: JSON.stringify({ projectNumber: 'P1' }),
       });
       expect(result.nodes).toContainEqual({
         id: 'data-1',
         type: NodeType.DATASET,
         label: 'Dataset 1',
-        data: expect.any(String) as string,
+        data: JSON.stringify({ datasetNo: undefined }),
       });
       expect(result.nodes).toContainEqual({
         id: 'cont-1',
         type: NodeType.CONTRIBUTOR,
         label: 'Alice',
-        data: expect.any(String) as string,
+        data: JSON.stringify({ contributorId: undefined }),
       });
 
       // Check Edges
