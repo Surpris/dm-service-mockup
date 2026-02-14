@@ -60,11 +60,13 @@ const DatasetNode = ({ id, data }: NodeProps<DatasetNodeType>) => {
         type="target"
         position={data.targetPosition || Position.Top}
         style={{ width: 12, height: 12, background: '#2e7d32' }}
+        data-testid={`handle-target-${id}`}
       />
       <Handle
         type="source"
         position={data.sourcePosition || Position.Bottom}
         style={{ width: 12, height: 12, background: '#2e7d32' }}
+        data-testid={`handle-source-${id}`}
       />
     </Box>
   );

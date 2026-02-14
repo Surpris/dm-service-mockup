@@ -60,11 +60,13 @@ const ProjectNode = ({ id, data }: NodeProps<ProjectNodeType>) => {
         type="target"
         position={data.targetPosition || Position.Top}
         style={{ width: 12, height: 12, background: '#1976d2' }}
+        data-testid={`handle-target-${id}`}
       />
       <Handle
         type="source"
         position={data.sourcePosition || Position.Bottom}
         style={{ width: 12, height: 12, background: '#1976d2' }}
+        data-testid={`handle-source-${id}`}
       />
     </Box>
   );
