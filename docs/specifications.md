@@ -233,5 +233,5 @@ enum EntityType {
 
 - **Goal:** E2Eでの動作確認と、将来的な運用のための準備。
 - **Tasks:**
-- [ ] [QA] シナリオテスト（データの作成 → 独自リレーション設定 → グラフ確認 → 削除）。
+- [x] [QA] シナリオテスト（データの作成 → 独自リレーション設定 → グラフ確認 → 削除）。
 - [ ] [Ops] `UserDefinedRelationship` から System Relation への昇格（Promotion）用SQL/スクリプトのプロトタイプ作成。
