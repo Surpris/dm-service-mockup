@@ -11,6 +11,32 @@ export const GET_PROJECTS = gql`
   }
 `;
 
+export const GET_PROJECT = gql`
+  query GetProject($id: ID!) {
+    project(id: $id) {
+      id
+      projectNumber
+      description
+      createdAt
+      updatedAt
+      datasets {
+        id
+        title
+        datasetNo
+        accessPolicy
+      }
+      contributors {
+        id
+        role
+        contributor {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
 export const GET_DATASETS = gql`
   query GetDatasets {
     datasets {

@@ -3,6 +3,18 @@ export interface Project {
   projectNumber: string;
   description: string;
   createdAt: string;
+  updatedAt?: string;
+  datasets?: Dataset[];
+  contributors?: ProjectContributor[];
+}
+
+export interface ProjectContributor {
+  id: string;
+  role: string;
+  contributor: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface Dataset {
@@ -24,6 +36,10 @@ export interface Contributor {
 
 export interface ProjectsData {
   projects: Project[];
+}
+
+export interface ProjectData {
+  project: Project;
 }
 
 export interface DatasetsData {
