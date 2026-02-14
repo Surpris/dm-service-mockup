@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing/react';
+import { MemoryRouter } from 'react-router-dom';
 import ProjectList from './ProjectList';
 import { GET_PROJECTS } from '../graphql/queries';
 import { describe, it, expect } from 'vitest';
@@ -37,7 +38,9 @@ describe('ProjectList', () => {
   it('renders loading state initially', () => {
     render(
       <MockedProvider mocks={[]}>
-        <ProjectList />
+        <MemoryRouter>
+          <ProjectList />
+        </MemoryRouter>
       </MockedProvider>,
     );
 
@@ -47,7 +50,9 @@ describe('ProjectList', () => {
   it('renders projects data after successful load', async () => {
     render(
       <MockedProvider mocks={mocks}>
-        <ProjectList />
+        <MemoryRouter>
+          <ProjectList />
+        </MemoryRouter>
       </MockedProvider>,
     );
 
@@ -65,7 +70,9 @@ describe('ProjectList', () => {
   it('renders error message on failure', async () => {
     render(
       <MockedProvider mocks={errorMocks}>
-        <ProjectList />
+        <MemoryRouter>
+          <ProjectList />
+        </MemoryRouter>
       </MockedProvider>,
     );
 

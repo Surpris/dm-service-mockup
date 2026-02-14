@@ -19,7 +19,7 @@
 - **API**: GraphQL (Apollo Server 5)
 - **Database**: PostgreSQL (v16+)
 - **ORM**: [Prisma](https://www.prisma.io/) (v5.22.0)
-  - *安定性のため v5.22.0 に固定されています。*
+  - _安定性のため v5.22.0 に固定されています。_
 - **Auth/ID**: UUID v7 (時系列ソート可能なUUID)
 
 ## ✨ 主要機能と実装詳細
@@ -37,6 +37,14 @@
 
 - **仕組み**: Prisma Client Extension が `delete` 系の操作を `update` ( `deletedAt` 設定) に変換します。
 - **自動フィルタリング**: `findUnique`, `findFirst`, `findMany` などのクエリ時に、`deletedAt` が NULL でないレコードは自動的に除外されます。
+
+### 🕸️ グラフAPI (Graph Module)
+
+システム定義およびユーザー定義のリレーションシップを統合し、ナレッジグラフとして提供する専用APIを実装しています。
+
+- **Query**: `graph(filter: String): GraphData`
+- **Output**: フロントエンドの React Flow が解釈しやすいノード・エッジ形式のデータ構造。
+- **Integration**: `UserDefinedRelationship` と標準リレーション（Project-Dataset間など）を動的に結合して返却します。
 
 ### 📊 データモデル (Core Entities)
 
