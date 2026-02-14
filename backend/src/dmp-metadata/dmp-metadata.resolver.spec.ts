@@ -97,9 +97,8 @@ describe('DMPMetadataResolver', () => {
     it('should call service.update', async () => {
       const input: UpdateDMPMetadataInput = {
         id: 'dmp-1',
-        status: 'PUBLISHED',
       };
-      const expectedResult = { id: 'dmp-1', status: 'PUBLISHED' };
+      const expectedResult = { id: 'dmp-1' };
       mockDMPMetadataService.update.mockResolvedValue(expectedResult);
 
       const result = await resolver.updateDMPMetadata(input);
@@ -109,6 +108,17 @@ describe('DMPMetadataResolver', () => {
         input,
       );
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if service.update fails', async () => {
+      const input: UpdateDMPMetadataInput = { id: 'dmp-1' };
+      mockDMPMetadataService.update.mockRejectedValue(
+        new Error('Update failed'),
+      );
+
+      await expect(resolver.updateDMPMetadata(input)).rejects.toThrow(
+        'Update failed',
+      );
     });
   });
 
@@ -122,6 +132,17 @@ describe('DMPMetadataResolver', () => {
 
       expect(mockDMPMetadataService.remove).toHaveBeenCalledWith(id);
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if service.remove fails', async () => {
+      const id = 'dmp-1';
+      mockDMPMetadataService.remove.mockRejectedValue(
+        new Error('Remove failed'),
+      );
+
+      await expect(resolver.removeDMPMetadata(id)).rejects.toThrow(
+        'Remove failed',
+      );
     });
   });
 });

@@ -60,5 +60,11 @@ describe('GraphResolver', () => {
       expect(mockGraphService.getGraphData).toHaveBeenCalledWith(undefined);
       expect(result).toBe(expectedResult);
     });
+
+    it('should throw error if service.getGraphData fails', async () => {
+      mockGraphService.getGraphData.mockRejectedValue(new Error('Graph error'));
+
+      await expect(resolver.graph()).rejects.toThrow('Graph error');
+    });
   });
 });

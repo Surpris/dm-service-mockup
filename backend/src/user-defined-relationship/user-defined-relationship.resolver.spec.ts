@@ -104,6 +104,15 @@ describe('UserDefinedRelationshipResolver', () => {
       expect(mockService.update).toHaveBeenCalledWith(input.id, input);
       expect(result).toBe(expectedResult);
     });
+
+    it('should throw error if service.update fails', async () => {
+      const input: UpdateUserDefinedRelationshipInput = { id: 'ur-1' };
+      mockService.update.mockRejectedValue(new Error('Update failed'));
+
+      await expect(
+        resolver.updateUserDefinedRelationship(input),
+      ).rejects.toThrow('Update failed');
+    });
   });
 
   describe('removeUserDefinedRelationship', () => {
@@ -116,6 +125,15 @@ describe('UserDefinedRelationshipResolver', () => {
 
       expect(mockService.remove).toHaveBeenCalledWith(id);
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if service.remove fails', async () => {
+      const id = 'ur-1';
+      mockService.remove.mockRejectedValue(new Error('Remove failed'));
+
+      await expect(resolver.removeUserDefinedRelationship(id)).rejects.toThrow(
+        'Remove failed',
+      );
     });
   });
 });

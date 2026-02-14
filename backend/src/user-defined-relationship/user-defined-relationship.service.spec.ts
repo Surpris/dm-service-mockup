@@ -85,4 +85,92 @@ describe('UserDefinedRelationshipService', () => {
       });
     });
   });
+
+  describe('findOne', () => {
+    it('should return a relationship by id', async () => {
+      const id = 'uuid-1';
+      const expectedResult = { id, relationshipType: 'test' };
+      (
+        prisma.client.userDefinedRelationship.findFirst as jest.Mock
+      ).mockResolvedValue(expectedResult);
+
+      const result = await service.findOne(id);
+      expect(result).toEqual(expectedResult);
+      expect(
+        prisma.client.userDefinedRelationship.findFirst,
+      ).toHaveBeenCalledWith({
+        where: { id, deletedAt: null },
+      });
+    });
+
+    it('should return null if not found', async () => {
+      const id = 'not-found';
+      (
+        prisma.client.userDefinedRelationship.findFirst as jest.Mock
+      ).mockResolvedValue(null);
+
+      const result = await service.findOne(id);
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('update', () => {
+    it('should update a relationship', async () => {
+      const id = 'uuid-1';
+      const input = { relationshipType: 'UPDATED' };
+      const expectedResult = { id, ...input };
+      (
+        prisma.client.userDefinedRelationship.update as jest.Mock
+      ).mockResolvedValue(expectedResult);
+
+      const result = await service.update(id, input);
+      expect(result).toEqual(expectedResult);
+      expect(prisma.client.userDefinedRelationship.update).toHaveBeenCalledWith(
+        {
+          where: { id },
+          data: input,
+        },
+      );
+    });
+
+    it('should throw error if not found during update', async () => {
+      const id = 'not-found';
+      (
+        prisma.client.userDefinedRelationship.update as jest.Mock
+      ).mockRejectedValue(new Error('Not found'));
+
+      await expect(service.update(id, {})).rejects.toThrow('Not found');
+    });
+  });
+
+  describe('remove', () => {
+    it('should soft delete a relationship', async () => {
+      const id = 'uuid-1';
+      const expectedResult = { id, deletedAt: new Date() };
+      (
+        prisma.client.userDefinedRelationship.update as jest.Mock
+      ).mockResolvedValue(expectedResult);
+
+      const result = await service.remove(id);
+      expect(result).toEqual(expectedResult);
+      expect(prisma.client.userDefinedRelationship.update).toHaveBeenCalledWith(
+        {
+          where: { id },
+          data: {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            deletedAt: expect.any(Date),
+          },
+        },
+      );
+    });
+
+    it('should throw error if not found during removal', async () => {
+      const id = 'not-found';
+      (
+        prisma.client.userDefinedRelationship.update as jest.Mock
+      ).mockRejectedValue(new Error('Not found'));
+
+      await expect(service.remove(id)).rejects.toThrow('Not found');
+    });
+  });
 });

@@ -113,6 +113,18 @@ describe('ProjectService', () => {
       });
       expect(result).toBe(expectedResult);
     });
+
+    it('should throw error if project not found', async () => {
+      const id = 'non-existent';
+      const input: UpdateProjectInput = { projectNumber: 'UPDATED' };
+      mockPrismaClient.project.update.mockRejectedValue(
+        new Error('Record to update not found.'),
+      );
+
+      await expect(service.update(id, input)).rejects.toThrow(
+        'Record to update not found.',
+      );
+    });
   });
 
   describe('remove', () => {
@@ -129,6 +141,17 @@ describe('ProjectService', () => {
         data: { deletedAt: expect.any(Date) },
       });
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if project not found during removal', async () => {
+      const id = 'non-existent';
+      mockPrismaClient.project.update.mockRejectedValue(
+        new Error('Record to update not found.'),
+      );
+
+      await expect(service.remove(id)).rejects.toThrow(
+        'Record to update not found.',
+      );
     });
   });
 });

@@ -83,6 +83,15 @@ describe('ContributorResolver', () => {
       expect(mockContributorService.findOne).toHaveBeenCalledWith(id);
       expect(result).toBe(expectedResult);
     });
+
+    it('should return null if not found', async () => {
+      const id = 'not-found';
+      mockContributorService.findOne.mockResolvedValue(null);
+
+      const result = await resolver.findOne(id);
+
+      expect(result).toBeNull();
+    });
   });
 
   describe('updateContributor', () => {
@@ -96,6 +105,18 @@ describe('ContributorResolver', () => {
 
       expect(mockContributorService.update).toHaveBeenCalledWith(id, input);
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if service fails', async () => {
+      const id = 'uuid-1';
+      const input: UpdateContributorInput = { name: 'Updated' };
+      mockContributorService.update.mockRejectedValue(
+        new Error('Update failed'),
+      );
+
+      await expect(resolver.updateContributor(id, input)).rejects.toThrow(
+        'Update failed',
+      );
     });
   });
 

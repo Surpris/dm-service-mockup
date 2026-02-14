@@ -123,8 +123,8 @@ describe('DMPMetadataService', () => {
   describe('update', () => {
     it('should call prisma.dMPMetadata.update with correct params', async () => {
       const id = 'dmp-1';
-      const input: UpdateDMPMetadataInput = { id, status: 'PUBLISHED' };
-      const expectedResult = { id, status: 'PUBLISHED' };
+      const input: UpdateDMPMetadataInput = { id };
+      const expectedResult = { id };
       mockPrismaClient.dMPMetadata.update.mockResolvedValue(expectedResult);
 
       const result = await service.update(id, input);
@@ -141,6 +141,17 @@ describe('DMPMetadataService', () => {
       });
       expect(result).toBe(expectedResult);
     });
+
+    it('should throw error if dmp-metadata not found', async () => {
+      const id = 'non-existent';
+      mockPrismaClient.dMPMetadata.update.mockRejectedValue(
+        new Error('Record to update not found.'),
+      );
+
+      await expect(service.update(id, { id })).rejects.toThrow(
+        'Record to update not found.',
+      );
+    });
   });
 
   describe('remove', () => {
@@ -155,6 +166,17 @@ describe('DMPMetadataService', () => {
         where: { id },
       });
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if dmp-metadata not found during removal', async () => {
+      const id = 'non-existent';
+      mockPrismaClient.dMPMetadata.delete.mockRejectedValue(
+        new Error('Record to delete not found.'),
+      );
+
+      await expect(service.remove(id)).rejects.toThrow(
+        'Record to delete not found.',
+      );
     });
   });
 });

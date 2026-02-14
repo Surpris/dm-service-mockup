@@ -83,6 +83,15 @@ describe('DatasetResolver', () => {
       expect(mockDatasetService.findOne).toHaveBeenCalledWith(id);
       expect(result).toBe(expectedResult);
     });
+
+    it('should return null if not found', async () => {
+      const id = 'not-found';
+      mockDatasetService.findOne.mockResolvedValue(null);
+
+      const result = await resolver.findOne(id);
+
+      expect(result).toBeNull();
+    });
   });
 
   describe('updateDataset', () => {
@@ -96,6 +105,16 @@ describe('DatasetResolver', () => {
 
       expect(mockDatasetService.update).toHaveBeenCalledWith(id, input);
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if service fails', async () => {
+      const id = 'uuid-1';
+      const input: UpdateDatasetInput = { title: 'Updated' };
+      mockDatasetService.update.mockRejectedValue(new Error('Update failed'));
+
+      await expect(resolver.updateDataset(id, input)).rejects.toThrow(
+        'Update failed',
+      );
     });
   });
 

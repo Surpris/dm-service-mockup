@@ -141,5 +141,83 @@ describe('GraphService', () => {
       expect(userEdge).toBeDefined();
       expect(userEdge?.type).toBe('RELATED_TO');
     });
+
+    it('should return empty graph when no data exists', async () => {
+      (prisma.client.project.findMany as jest.Mock).mockResolvedValue([]);
+      (prisma.client.dataset.findMany as jest.Mock).mockResolvedValue([]);
+      (prisma.client.contributor.findMany as jest.Mock).mockResolvedValue([]);
+      (
+        prisma.client.projectContributor.findMany as jest.Mock
+      ).mockResolvedValue([]);
+      (
+        prisma.client.userDefinedRelationship.findMany as jest.Mock
+      ).mockResolvedValue([]);
+
+      const result = await service.getGraphData();
+
+      expect(result.nodes).toHaveLength(0);
+      expect(result.edges).toHaveLength(0);
+    });
+
+    it('should handle disconnected nodes correctly', async () => {
+      const projects = [{ id: 'p1', projectNumber: 'P1', description: 'P1' }];
+      const datasets = [{ id: 'd1', title: 'D1', projectId: 'other-p' }]; // D1 belongs to non-existent project in this result set
+
+      (prisma.client.project.findMany as jest.Mock).mockResolvedValue(projects);
+      (prisma.client.dataset.findMany as jest.Mock).mockResolvedValue(datasets);
+      (prisma.client.contributor.findMany as jest.Mock).mockResolvedValue([]);
+      (
+        prisma.client.projectContributor.findMany as jest.Mock
+      ).mockResolvedValue([]);
+      (
+        prisma.client.userDefinedRelationship.findMany as jest.Mock
+      ).mockResolvedValue([]);
+
+      const result = await service.getGraphData();
+
+      expect(result.nodes).toHaveLength(2);
+      // Edge will still be created pointing to a non-existent node in the UI's view,
+      // but the service should still produce it based on the data.
+      expect(result.edges).toHaveLength(1);
+      expect(result.edges[0].source).toBe('other-p');
+      expect(result.edges[0].target).toBe('d1');
+    });
+
+    it('should handle circular references in user defined relationships', async () => {
+      const userRelations = [
+        {
+          id: 'ur-1',
+          sourceId: 'node-a',
+          targetId: 'node-b',
+          relationshipType: 'LINK',
+        },
+        {
+          id: 'ur-2',
+          sourceId: 'node-b',
+          targetId: 'node-a',
+          relationshipType: 'LINK',
+        },
+      ];
+
+      (prisma.client.project.findMany as jest.Mock).mockResolvedValue([]);
+      (prisma.client.dataset.findMany as jest.Mock).mockResolvedValue([]);
+      (prisma.client.contributor.findMany as jest.Mock).mockResolvedValue([]);
+      (
+        prisma.client.projectContributor.findMany as jest.Mock
+      ).mockResolvedValue([]);
+      (
+        prisma.client.userDefinedRelationship.findMany as jest.Mock
+      ).mockResolvedValue(userRelations);
+
+      const result = await service.getGraphData();
+
+      expect(result.edges).toHaveLength(2);
+      expect(result.edges).toContainEqual(
+        expect.objectContaining({ source: 'node-a', target: 'node-b' }),
+      );
+      expect(result.edges).toContainEqual(
+        expect.objectContaining({ source: 'node-b', target: 'node-a' }),
+      );
+    });
   });
 });
