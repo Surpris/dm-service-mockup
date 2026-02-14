@@ -12,9 +12,10 @@ type ContributorNodeData = {
 
 type ContributorNodeType = Node<ContributorNodeData, 'contributor'>;
 
-const ContributorNode = ({ data }: NodeProps<ContributorNodeType>) => {
+const ContributorNode = ({ id, data }: NodeProps<ContributorNodeType>) => {
   return (
     <Box
+      data-testid={`node-contributor-${id}`}
       sx={{
         px: 2,
         py: 1,

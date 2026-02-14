@@ -13,9 +13,10 @@ type ProjectNodeData = {
 
 type ProjectNodeType = Node<ProjectNodeData, 'project'>;
 
-const ProjectNode = ({ data }: NodeProps<ProjectNodeType>) => {
+const ProjectNode = ({ id, data }: NodeProps<ProjectNodeType>) => {
   return (
     <Box
+      data-testid={`node-project-${id}`}
       sx={{
         px: 2,
         py: 1,

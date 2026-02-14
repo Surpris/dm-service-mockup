@@ -3,7 +3,10 @@ import GraphContainer from '../features/graph/components/GraphContainer';
 
 const GraphPage = () => {
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box
+      sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+      data-testid="graph-page"
+    >
       <Typography variant="h4" component="h1" gutterBottom>
         Knowledge Graph
       </Typography>

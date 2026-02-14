@@ -44,6 +44,7 @@ const GraphView: React.FC<GraphViewProps> = ({
 }) => {
   return (
     <Box
+      data-testid="graph-view"
       sx={{
         // デフォルトスタイル: 親要素いっぱいに広げる
         width: '100%',
@@ -71,6 +72,7 @@ const GraphView: React.FC<GraphViewProps> = ({
         <Panel position="top-right">
           <Stack direction="row" spacing={1}>
             <Button
+              data-testid="layout-vertical-button"
               variant="contained"
               size="small"
               onClick={() => onLayout('TB')}
@@ -83,6 +85,7 @@ const GraphView: React.FC<GraphViewProps> = ({
               Layout Vertical
             </Button>
             <Button
+              data-testid="layout-horizontal-button"
               variant="contained"
               size="small"
               onClick={() => onLayout('LR')}

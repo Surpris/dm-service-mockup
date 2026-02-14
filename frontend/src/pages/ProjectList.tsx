@@ -31,7 +31,7 @@ export default function ProjectList() {
     );
 
   return (
-    <Box sx={{ height: 600, width: '100%' }}>
+    <Box sx={{ height: 600, width: '100%' }} data-testid="project-list-page">
       <Typography variant="h4" component="h1" gutterBottom>
         Projects
       </Typography>

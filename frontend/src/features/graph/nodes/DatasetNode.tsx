@@ -13,9 +13,10 @@ type DatasetNodeData = {
 
 type DatasetNodeType = Node<DatasetNodeData, 'dataset'>;
 
-const DatasetNode = ({ data }: NodeProps<DatasetNodeType>) => {
+const DatasetNode = ({ id, data }: NodeProps<DatasetNodeType>) => {
   return (
     <Box
+      data-testid={`node-dataset-${id}`}
       sx={{
         px: 2,
         py: 1,

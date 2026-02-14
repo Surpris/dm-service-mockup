@@ -27,7 +27,10 @@ export default function ContributorList() {
     );
 
   return (
-    <Box sx={{ height: 600, width: '100%' }}>
+    <Box
+      sx={{ height: 600, width: '100%' }}
+      data-testid="contributor-list-page"
+    >
       <Typography variant="h4" component="h1" gutterBottom>
         Contributors
       </Typography>
