@@ -24,7 +24,11 @@ export class ProjectService {
     });
   }
 
-  update(id: string, updateProjectInput: UpdateProjectInput) {
+  async update(id: string, updateProjectInput: UpdateProjectInput) {
+    const project = await this.findOne(id);
+    if (!project) {
+      throw new Error(`Project with ID ${id} not found or has been deleted`);
+    }
     return this.prisma.client.project.update({
       where: { id },
       data: updateProjectInput,

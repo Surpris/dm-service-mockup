@@ -9,10 +9,42 @@ import {
 export class UserDefinedRelationshipService {
   constructor(private prisma: PrismaService) {}
 
-  create(input: CreateUserDefinedRelationshipInput) {
+  async create(input: CreateUserDefinedRelationshipInput) {
+    // Validate source existence
+    await this.validateEntityExistence(input.sourceId, input.sourceType);
+    // Validate target existence
+    await this.validateEntityExistence(input.targetId, input.targetType);
+
     return this.prisma.client.userDefinedRelationship.create({
       data: input,
     });
+  }
+
+  private async validateEntityExistence(id: string, type: string) {
+    let exists = false;
+    switch (type) {
+      case 'PROJECT':
+        exists = !!(await this.prisma.client.project.findFirst({
+          where: { id, deletedAt: null },
+        }));
+        break;
+      case 'DATASET':
+        exists = !!(await this.prisma.client.dataset.findFirst({
+          where: { id, deletedAt: null },
+        }));
+        break;
+      case 'CONTRIBUTOR':
+        exists = !!(await this.prisma.client.contributor.findFirst({
+          where: { id, deletedAt: null },
+        }));
+        break;
+      default:
+        throw new Error(`Unknown entity type: ${type}`);
+    }
+
+    if (!exists) {
+      throw new Error(`${type} with ID ${id} not found or has been deleted`);
+    }
   }
 
   findAll() {
