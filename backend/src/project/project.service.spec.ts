@@ -103,6 +103,7 @@ describe('ProjectService', () => {
       const id = 'uuid-1';
       const input: UpdateProjectInput = { projectNumber: 'PRJ-UPDATED' };
       const expectedResult = { id, name: 'Updated' };
+      mockPrismaClient.project.findFirst.mockResolvedValue({ id });
       mockPrismaClient.project.update.mockResolvedValue(expectedResult);
 
       const result = await service.update(id, input);
@@ -117,12 +118,10 @@ describe('ProjectService', () => {
     it('should throw error if project not found', async () => {
       const id = 'non-existent';
       const input: UpdateProjectInput = { projectNumber: 'UPDATED' };
-      mockPrismaClient.project.update.mockRejectedValue(
-        new Error('Record to update not found.'),
-      );
+      mockPrismaClient.project.findFirst.mockResolvedValue(null);
 
       await expect(service.update(id, input)).rejects.toThrow(
-        'Record to update not found.',
+        `Project with ID ${id} not found or has been deleted`,
       );
     });
   });

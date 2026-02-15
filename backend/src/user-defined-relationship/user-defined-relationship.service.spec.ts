@@ -10,6 +10,16 @@ const mockPrismaService = {
       findMany: jest.fn(),
       findFirst: jest.fn(),
       update: jest.fn(),
+      delete: jest.fn(),
+    },
+    project: {
+      findFirst: jest.fn(),
+    },
+    dataset: {
+      findFirst: jest.fn(),
+    },
+    contributor: {
+      findFirst: jest.fn(),
     },
   },
 };
@@ -58,6 +68,12 @@ describe('UserDefinedRelationshipService', () => {
       (
         prisma.client.userDefinedRelationship.create as jest.Mock
       ).mockResolvedValue(expectedResult);
+      (prisma.client.project.findFirst as jest.Mock).mockResolvedValue({
+        id: 'src-1',
+      });
+      (prisma.client.dataset.findFirst as jest.Mock).mockResolvedValue({
+        id: 'tgt-1',
+      });
 
       const result = await service.create(input);
       expect(result).toEqual(expectedResult);
