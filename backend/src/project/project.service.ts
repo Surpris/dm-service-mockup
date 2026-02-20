@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProjectInput, UpdateProjectInput } from './dto/project.input';
 
@@ -24,7 +24,13 @@ export class ProjectService {
     });
   }
 
-  update(id: string, updateProjectInput: UpdateProjectInput) {
+  async update(id: string, updateProjectInput: UpdateProjectInput) {
+    const project = await this.findOne(id);
+    if (!project) {
+      throw new NotFoundException(
+        `Project with ID ${id} not found or has been deleted`,
+      );
+    }
     return this.prisma.client.project.update({
       where: { id },
       data: updateProjectInput,

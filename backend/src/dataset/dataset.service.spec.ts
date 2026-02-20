@@ -116,6 +116,18 @@ describe('DatasetService', () => {
       });
       expect(result).toBe(expectedResult);
     });
+
+    it('should throw error if dataset not found', async () => {
+      const id = 'non-existent';
+      const input: UpdateDatasetInput = { title: 'UPDATED' };
+      mockPrismaClient.dataset.update.mockRejectedValue(
+        new Error('Record to update not found.'),
+      );
+
+      await expect(service.update(id, input)).rejects.toThrow(
+        'Record to update not found.',
+      );
+    });
   });
 
   describe('remove', () => {
@@ -132,6 +144,17 @@ describe('DatasetService', () => {
         data: { deletedAt: expect.any(Date) },
       });
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if dataset not found during removal', async () => {
+      const id = 'non-existent';
+      mockPrismaClient.dataset.update.mockRejectedValue(
+        new Error('Record to update not found.'),
+      );
+
+      await expect(service.remove(id)).rejects.toThrow(
+        'Record to update not found.',
+      );
     });
   });
 });

@@ -116,6 +116,18 @@ describe('ContributorService', () => {
       });
       expect(result).toBe(expectedResult);
     });
+
+    it('should throw error if contributor not found', async () => {
+      const id = 'non-existent';
+      const input: UpdateContributorInput = { name: 'UPDATED' };
+      mockPrismaClient.contributor.update.mockRejectedValue(
+        new Error('Record to update not found.'),
+      );
+
+      await expect(service.update(id, input)).rejects.toThrow(
+        'Record to update not found.',
+      );
+    });
   });
 
   describe('remove', () => {
@@ -132,6 +144,17 @@ describe('ContributorService', () => {
         data: { deletedAt: expect.any(Date) },
       });
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if contributor not found during removal', async () => {
+      const id = 'non-existent';
+      mockPrismaClient.contributor.update.mockRejectedValue(
+        new Error('Record to update not found.'),
+      );
+
+      await expect(service.remove(id)).rejects.toThrow(
+        'Record to update not found.',
+      );
     });
   });
 });

@@ -77,6 +77,15 @@ describe('ProjectResolver', () => {
       expect(mockProjectService.findOne).toHaveBeenCalledWith(id);
       expect(result).toBe(expectedResult);
     });
+
+    it('should return null if service.findOne returns null', async () => {
+      const id = 'not-found';
+      mockProjectService.findOne.mockResolvedValue(null);
+
+      const result = await resolver.findOne(id);
+
+      expect(result).toBeNull();
+    });
   });
 
   describe('updateProject', () => {
@@ -90,6 +99,16 @@ describe('ProjectResolver', () => {
 
       expect(mockProjectService.update).toHaveBeenCalledWith(id, input);
       expect(result).toBe(expectedResult);
+    });
+
+    it('should throw error if service.update fails', async () => {
+      const id = 'uuid-1';
+      const input: UpdateProjectInput = { projectNumber: 'Updated' };
+      mockProjectService.update.mockRejectedValue(new Error('Update failed'));
+
+      await expect(resolver.updateProject(id, input)).rejects.toThrow(
+        'Update failed',
+      );
     });
   });
 
