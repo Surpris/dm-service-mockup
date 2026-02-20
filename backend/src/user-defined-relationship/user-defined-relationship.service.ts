@@ -43,7 +43,9 @@ export class UserDefinedRelationshipService {
     }
 
     if (!exists) {
-      throw new NotFoundException(`${type} with ID ${id} not found or has been deleted`);
+      throw new NotFoundException(
+        `${type} with ID ${id} not found or has been deleted`,
+      );
     }
   }
 

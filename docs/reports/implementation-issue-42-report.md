@@ -48,4 +48,10 @@ Added the following scripts to `backend/package.json` to support CI environments
   - `project-contributor.resolver.ts` is currently at 0% coverage.
   - `main.ts` and module files are uncovered (typical for NestJS, can be excluded from coverage report if desired).
 - **Next Steps**:
-  - Address missing tests for `project-contributor.resolver.ts` to boost overall coverage closer to 80%.
+  - (Done) Address missing tests for `project-contributor.resolver.ts`.
+
+## Phase 6: Project Contributor Coverage
+
+- Implemented unit tests for `project-contributor.resolver.ts` in `backend/src/project/project-contributor.resolver.spec.ts`.
+- **Coverage**: ~90% (Statements), verifying field resolvers for `project` and `contributor` relations.
+- **Pass Rate**: 100% (15 Test Suites, 111 Tests passed).

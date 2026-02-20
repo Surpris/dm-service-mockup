@@ -27,7 +27,9 @@ export class ProjectService {
   async update(id: string, updateProjectInput: UpdateProjectInput) {
     const project = await this.findOne(id);
     if (!project) {
-      throw new NotFoundException(`Project with ID ${id} not found or has been deleted`);
+      throw new NotFoundException(
+        `Project with ID ${id} not found or has been deleted`,
+      );
     }
     return this.prisma.client.project.update({
       where: { id },
